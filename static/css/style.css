@@ -1,0 +1,137 @@
+/* ============================ Standard reset ============================ */
+
+.code_container {
+	width: 100%;
+	height: 500px;
+	background-color: #FFFFFF;
+	font-family: monaco, consolas, "courier new", monospace;
+	font-size: 1em;
+	overflow: auto;
+	width: 100%;
+	height: 100%;
+	background-color: white;
+	float:left;
+}
+
+/* ============================ Spatial Layout ============================ */
+
+h1{
+	font-size: 24px;
+	margin-bottom: 8px;
+	margin-top: 16px;
+	font-weight: bold;
+}
+
+h2{
+	font-size: 18px;
+	margin-bottom: 9px;
+	margin-top: 12px;
+	font-weight: bold;
+}
+
+h3{
+	font-size: inherit;
+	font-weight: bold;
+	margin-top: 16px;
+	margin-bottom: 4px;
+}
+
+td{
+	padding:0 15px 0 0;
+}
+
+
+/* ================================ Colors ================================ */
+/*
+     NAVBAR #FFFFFF
+ CONTENT_BG #505050
+ BACKGROUND #BBBBBB
+     HEADER #009000
+*/
+
+body{
+	background-color: #BBBBBB; /* BACKGROUND */
+	text-align: center;
+	font-size: 10px;
+	padding-bottom: 10px;
+}
+
+
+/* ================================= Links ================================ */
+
+a:link {
+	text-decoration: underline;
+}
+
+a:visited {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+	background-color: #009000; /* HEADER */
+	color: #FFFFFF; /* NAVBAR */
+}
+
+a:active {
+	text-decoration: underline;
+}
+
+
+/* ================================ Classes =============================== */
+
+.headerbg{
+	background-color: #009000; /* HEADER */
+	padding: 0;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin: 0;
+	width: 100%;
+	text-align: left;
+}
+
+.header{
+	color: #FFFFFF; /* NAVBAR */
+	padding: 2px;
+	margin: 0 auto;
+	margin-bottom: 0;
+	width: 1000px;
+	text-align: left;
+	font-size: 32px;
+	font-weight: bold;
+}
+
+.main{
+	background-color: #505050; /* CONTENT_BG */
+	color:            #FFFFFF; /* NAVBAR */
+	padding: 32px;
+	margin: 0 auto;
+	margin-top: 0px;
+	margin-bottom: 32px;
+	width: 998px;
+	min-height: 720px;
+	font-size: 16px;
+	text-align: left;
+	line-height: 200%;
+}
+
+
+/* ============================== Github logo ============================= */
+
+.icon-link{
+	width: 32px;
+	height: 32px;
+	font-size: 48px;
+	vertical-align: center;
+	padding: 5px;
+	padding-left: 16px;
+	padding-right: 16px;
+	margin: 2px;
+}
+
+.icon-link:link{
+	text-decoration: none;
+}
+.icon-link:hover{
+	background-color: #AAAAAA;
+}

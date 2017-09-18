@@ -1,7 +1,6 @@
-<<<<<<< HEAD
 .DS_Store
 .vscode
-=======
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -103,4 +102,3 @@ ENV/
 
 # mypy
 .mypy_cache/
->>>>>>> e34a06ad083a81fd42958dfc8cdc788346c6971b

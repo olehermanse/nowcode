@@ -1,4 +1,6 @@
 from flask import Flask, request, send_from_directory, redirect, render_template
+import argparse
+
 app = Flask(__name__)
 app.config['DEBUG'] = True
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -44,5 +46,16 @@ def post_data(session_name):
     sessions[session_name] = contents
     return "OK"
 
+def get_args():
+    argparser = argparse.ArgumentParser(description='Nowcode webserver/backend')
+    argparser.add_argument('--ip',   '-i', help='IP', type=str, default="0.0.0.0")
+    argparser.add_argument('--port', '-p', help='port number', type=int, default=5000)
+    args = argparser.parse_args()
+    return args
+
+def start_server(ip, port):
+    app.run(ip, port=port)
+
 if __name__ == "__main__":
-    app.run("0.0.0.0")
+    args = get_args()
+    start_server(args.ip, args.port)

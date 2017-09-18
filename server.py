@@ -1,5 +1,7 @@
 from flask import Flask, request, send_from_directory, redirect, render_template
 import argparse
+from base64 import urlsafe_b64encode as b64
+import os
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -12,7 +14,9 @@ sessions = {}
 
 def new_session():
     while True:
-        s = str(randint(10000,99999))
+        a = b64(os.urandom(16))
+        s = a.decode("ascii")[:8]
+
         if s not in sessions:
             sessions[s] = ""
             return s

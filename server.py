@@ -1,53 +1,85 @@
-from flask import Flask, request, send_from_directory, redirect, render_template
+from flask import Flask, render_template, Markup, jsonify, request, abort, redirect, Blueprint
+from flask_restplus import Api, Resource, fields, Namespace
+
 import argparse
-from base64 import urlsafe_b64encode as b64
 import os
+import json
+from base64 import urlsafe_b64encode as b64
+from random import randint
+
+buffers = {}
 
 app = Flask(__name__)
+blueprint = Blueprint('api', __name__, url_prefix='/api')
+api = Api(blueprint, version="0.1", title="Nowcode API", endpoint="/api")
+app.register_blueprint(blueprint)
 
-from random import randint
-import json
+ns_buffers = api.namespace("buffers", description="Shared text buffers")
 
-sessions = {}
+buffer_model = api.model("Buffer",
+    {
+        "buffer_id": fields.String(description="Unique identifier (url)", required=True),
+        "content": fields.String(description="All text in buffer", required=True)
+    })
 
-def new_session():
+
+def new_buffer():
     while True:
         a = b64(os.urandom(16))
         s = a.decode("ascii")[:8]
 
-        if s not in sessions:
-            sessions[s] = ""
+        if s not in buffers:
+            buffers[s] = ""
             return s
+# API
+@ns_buffers.route("/<string:buffer_id>")
+class Buffer(Resource):
+    @ns_buffers.marshal_with(buffer_model, code=201)
+    def get(self, buffer_id):
+        """Get all content of a buffer"""
+        if buffer_id not in buffers:
+            return None, 404
+        response = {"buffer_id": buffer_id,
+                    "content": buffers[buffer_id]}
+        return response
 
+    @ns_buffers.expect(buffer_model)
+    @ns_buffers.marshal_with(buffer_model, code=201)
+    def post(self, buffer_id):
+        """Create or update a buffer"""
+        if buffer_id not in buffers:
+            print("Reviving session: {}".format(buffer_id))
+        content = json.loads(request.json)["content"]
+        buffers[buffer_id] = content
+
+        response = {"buffer_id": buffer_id,
+                    "content": buffers[buffer_id]}
+        return response
+
+# Compatibility redirects:
+@app.route('/data/<string:buffer_id>', methods=["GET"])
+def get_content(buffer_id):
+    return redirect("/api/buffers/{}".format(buffer_id))
+
+@app.route("/<string:buffer_id>", methods=['POST'])
+def post_data(buffer_id):
+    return redirect("/api/buffers/{}".format(buffer_id))
+
+# Web server:
 @app.route('/')
 def root():
     return render_template("index.html")
 
 @app.route('/new')
 def new():
-    return redirect("/{}".format(new_session()))
+    return redirect("/{}".format(new_buffer()))
 
-@app.route('/<string:session_name>', methods=["GET"])
-def editor(session_name):
-    if session_name not in sessions:
+@app.route('/<string:buffer_id>', methods=["GET"])
+def editor(buffer_id):
+    if buffer_id not in buffers:
         return redirect("/")
     return render_template("editor.html")
 
-@app.route('/data/<string:session_name>', methods=["GET"])
-def get_contents(session_name):
-    if session_name not in sessions:
-        return json.dumps({"error": "Session does not currently exist, it will be created on POST"})
-    response = json.dumps({"contents": sessions[session_name]})
-    print("response: {}".format(response))
-    return response
-
-@app.route("/<string:session_name>", methods=['POST'])
-def post_data(session_name):
-    if session_name not in sessions:
-        print("Reviving session: {}".format(session_name))
-    contents = json.loads(request.json)["contents"]
-    sessions[session_name] = contents
-    return "OK"
 
 def get_args():
     argparser = argparse.ArgumentParser(description='Nowcode webserver/backend')

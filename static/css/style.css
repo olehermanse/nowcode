@@ -40,7 +40,6 @@ td{
 	padding:0 15px 0 0;
 }
 
-
 /* ================================ Colors ================================ */
 /*
      NAVBAR #FFFFFF
@@ -61,20 +60,29 @@ body{
 
 a:link {
 	text-decoration: underline;
+	color: #FFFFFF;
 }
 
 a:visited {
 	text-decoration: none;
+	color: #FFFFFF;
 }
 
 a:hover {
 	text-decoration: underline;
-	background-color: #009000; /* HEADER */
-	color: #FFFFFF; /* NAVBAR */
+	color: #DDDDDD;
 }
 
 a:active {
 	text-decoration: underline;
+	color: #FFFFFF;
+}
+
+.new_button {
+	padding: 12px;
+	padding-left: 30px;
+	padding-right: 30px;
+	font-size: 18px;
 }
 
 
@@ -111,7 +119,7 @@ a:active {
 	width: 998px;
 	min-height: 720px;
 	font-size: 16px;
-	text-align: left;
+	text-align: center;
 	line-height: 200%;
 }
 

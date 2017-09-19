@@ -4,8 +4,6 @@ from base64 import urlsafe_b64encode as b64
 import os
 
 app = Flask(__name__)
-app.config['DEBUG'] = True
-app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 from random import randint
 import json
@@ -37,15 +35,16 @@ def editor(session_name):
 
 @app.route('/data/<string:session_name>', methods=["GET"])
 def get_contents(session_name):
+    if session_name not in sessions:
+        return json.dumps({"error": "Session does not currently exist, it will be created on POST"})
     response = json.dumps({"contents": sessions[session_name]})
     print("response: {}".format(response))
-    return json.dumps({"contents": sessions[session_name]})
+    return response
 
 @app.route("/<string:session_name>", methods=['POST'])
 def post_data(session_name):
     if session_name not in sessions:
-        return redirect("/")
-    print(request.json)
+        print("Reviving session: {}".format(session_name))
     contents = json.loads(request.json)["contents"]
     sessions[session_name] = contents
     return "OK"
@@ -54,6 +53,7 @@ def get_args():
     argparser = argparse.ArgumentParser(description='Nowcode webserver/backend')
     argparser.add_argument('--ip',   '-i', help='IP', type=str, default="0.0.0.0")
     argparser.add_argument('--port', '-p', help='port number', type=int, default=5000)
+    argparser.add_argument('--release', '-r', help='Release mode', action="store_true")
     args = argparser.parse_args()
     return args
 
@@ -62,4 +62,7 @@ def start_server(ip, port):
 
 if __name__ == "__main__":
     args = get_args()
+    if not args.release:
+        app.config['DEBUG'] = True
+        app.config['TEMPLATES_AUTO_RELOAD'] = True
     start_server(args.ip, args.port)

@@ -1,6 +1,13 @@
 .DS_Store
 .vscode
 
+/public
+/swagger.json
+
+
+
+# Defaults
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

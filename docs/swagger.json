@@ -1,0 +1,119 @@
+{
+  "produces": [
+    "application/json"
+  ],
+  "info": {
+    "version": "0.1",
+    "title": "Nowcode API"
+  },
+  "definitions": {
+    "Buffer": {
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "All text in buffer"
+        },
+        "buffer_id": {
+          "type": "string",
+          "description": "Unique identifier (url)"
+        }
+      },
+      "required": [
+        "buffer_id",
+        "content"
+      ],
+      "type": "object"
+    }
+  },
+  "tags": [
+    {
+      "name": "default",
+      "description": "Default namespace"
+    },
+    {
+      "name": "buffers",
+      "description": "Shared text buffers"
+    }
+  ],
+  "responses": {
+    "MaskError": {
+      "description": "When any error occurs on mask"
+    },
+    "ParseError": {
+      "description": "When a mask can't be parsed"
+    }
+  },
+  "swagger": "2.0",
+  "basePath": "http:///api",
+  "consumes": [
+    "application/json"
+  ],
+  "paths": {
+    "/buffers/{buffer_id}": {
+      "parameters": [
+        {
+          "name": "buffer_id",
+          "type": "string",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get all content of a buffer",
+        "parameters": [
+          {
+            "name": "X-Fields",
+            "type": "string",
+            "description": "An optional fields mask",
+            "format": "mask",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Buffer"
+            },
+            "description": "Success"
+          }
+        },
+        "tags": [
+          "buffers"
+        ],
+        "operationId": "get_buffer"
+      },
+      "post": {
+        "summary": "Create or update a buffer",
+        "parameters": [
+          {
+            "name": "payload",
+            "schema": {
+              "$ref": "#/definitions/Buffer"
+            },
+            "in": "body",
+            "required": true
+          },
+          {
+            "name": "X-Fields",
+            "type": "string",
+            "description": "An optional fields mask",
+            "format": "mask",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Buffer"
+            },
+            "description": "Success"
+          }
+        },
+        "tags": [
+          "buffers"
+        ],
+        "operationId": "post_buffer"
+      }
+    }
+  }
+}

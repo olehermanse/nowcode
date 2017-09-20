@@ -11,9 +11,11 @@ matrix:
       python: 3.4
     - os: osx
       language: generic
+      if: branch = master
   allow_failures:
     - os: osx
       language: generic
+      if: branch = master
 
 install:
     - chmod u+x travis/install.sh

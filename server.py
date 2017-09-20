@@ -3,6 +3,7 @@ from flask_restplus import Api, Resource, fields, Namespace
 
 import argparse
 import os
+import sys
 import json
 from base64 import urlsafe_b64encode as b64
 from random import randint
@@ -11,7 +12,7 @@ buffers = {}
 
 app = Flask(__name__)
 blueprint = Blueprint('api', __name__, url_prefix='/api')
-api = Api(blueprint, version="0.1", title="Nowcode API", endpoint="/api")
+api = Api(blueprint, version="0.1", title="Nowcode API")
 app.register_blueprint(blueprint)
 
 ns_buffers = api.namespace("buffers", description="Shared text buffers")
@@ -86,15 +87,26 @@ def get_args():
     argparser.add_argument('--ip',   '-i', help='IP', type=str, default="0.0.0.0")
     argparser.add_argument('--port', '-p', help='port number', type=int, default=5000)
     argparser.add_argument('--release', '-r', help='Release mode', action="store_true")
+    argparser.add_argument('--docs', '-d', help='Output docs', action="store_true")
     args = argparser.parse_args()
     return args
 
 def start_server(ip, port):
     app.run(ip, port=port)
 
+
 if __name__ == "__main__":
     args = get_args()
-    if not args.release:
+    app.config['RESTPLUS_VALIDATE'] = True
+    if args.docs:
+        app.config['SERVER_NAME'] = ""
+        with app.app_context():
+            print(json.dumps(api.__schema__, indent=2))
+        sys.exit(0)
+    elif args.release:
+        app.config['SERVER_NAME'] = "nowco.de:80"
+    else:
+        app.config['SERVER_NAME'] = "127.0.0.1:5000"
         app.config['DEBUG'] = True
         app.config['TEMPLATES_AUTO_RELOAD'] = True
     start_server(args.ip, args.port)

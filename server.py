@@ -50,7 +50,12 @@ class Buffer(Resource):
         """Create or update a buffer"""
         if buffer_id not in buffers:
             print("Reviving session: {}".format(buffer_id))
-        content = json.loads(request.json)["content"]
+        if type(request.json) is str:
+            content = json.loads(request.json)["content"]
+        elif type(request.json) is dict:
+            content = request.json["content"]
+        else:
+            return None
         buffers[buffer_id] = content
 
         response = {"buffer_id": buffer_id,

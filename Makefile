@@ -9,6 +9,9 @@ swagger.json: server.py
 public: swagger.json
 	spectacle swagger.json
 
+deploy:
+	nohup python3 /root/nowcode/server.py --release --port 80 --ip 0.0.0.0 &
+
 docs: public swagger.json
 	rm -rf docs
 	cp -r public docs

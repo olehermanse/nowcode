@@ -74,7 +74,7 @@ def post_data(buffer_id):
 # Web server:
 @app.route('/')
 def root():
-    return app.send_static_file('index.html')
+    return redirect("/{}".format(new_buffer()))
 
 @app.route('/new')
 def new():

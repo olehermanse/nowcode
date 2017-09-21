@@ -57,11 +57,11 @@
         } else {
           console.log('Failed synchronization');
         }
+        setTimeout(synchronize, 150);
       };
     xhr.send();
   }
-
-setInterval(synchronize, 200);
+  synchronize();
 
 })();
 

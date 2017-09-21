@@ -10,7 +10,7 @@ from random import randint
 
 buffers = {}
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder='web/dist')
 blueprint = Blueprint('api', __name__, url_prefix='/api')
 api = Api(blueprint, version="0.1", title="Nowcode API")
 app.register_blueprint(blueprint)
@@ -74,7 +74,7 @@ def post_data(buffer_id):
 # Web server:
 @app.route('/')
 def root():
-    return render_template("index.html")
+    return app.send_static_file('index.html')
 
 @app.route('/new')
 def new():
@@ -84,7 +84,7 @@ def new():
 def editor(buffer_id):
     if buffer_id not in buffers:
         return redirect("/")
-    return render_template("editor.html")
+    return app.send_static_file('index.html')
 
 
 def get_args():

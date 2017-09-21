@@ -21,7 +21,6 @@ __pycache__/
 env/
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -109,3 +108,6 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# NodeJS / NPM modules
+node_modules

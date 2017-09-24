@@ -17,4 +17,6 @@ docs: public swagger.json
 	cp -r public docs
 	cp swagger.json docs/
 
-.PHONY: run-server default
+check: docs
+
+.PHONY: run-server default check

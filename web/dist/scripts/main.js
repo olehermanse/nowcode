@@ -3,17 +3,19 @@
   shareLink.value = window.location.host + window.location.pathname
 
   var editorCode = document.getElementById('editorCode');
-
+  var hasChangedSinceGet = false;
   editorCode.addEventListener("input", function() {
+    hasChangedSinceGet = true;
     updateServer();
   });
 
   editorCode.addEventListener("keyup", function() {
+    hasChangedSinceGet = true;
     updateServer();
   });
 
   editorCode.addEventListener("change", function() {
-
+    hasChangedSinceGet = true;
     updateServer();
   });
 
@@ -51,7 +53,7 @@
       xhr.responseType = 'json';
       xhr.onload = function() {
         var status = xhr.status;
-        if (status === 200) {
+        if (status === 200 && hasChangedSinceGet == false) {
           var editorCode = document.getElementById('editorCode');
           editorCode.value = xhr.response["content"]
         } else {
@@ -60,8 +62,8 @@
         setTimeout(synchronize, 150);
       };
     xhr.send();
+    hasChangedSinceGet = false;
   }
   synchronize();
 
 })();
-

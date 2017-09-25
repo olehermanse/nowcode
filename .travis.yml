@@ -18,12 +18,15 @@ matrix:
       language: generic
 
 install:
-    - chmod u+x travis/install.sh
-    - travis/install.sh
+    - chmod 700 ./travis/install.sh
+    - ./travis/install.sh
     - pip3 --version
 
 script:
     - py.test
+    - make check
+    - chmod 700 ./travis/test.sh
+    - ./travis/test.sh
 
 notifications:
     email: false

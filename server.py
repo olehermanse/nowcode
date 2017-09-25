@@ -5,6 +5,8 @@ import argparse
 import os
 import sys
 import json
+import ast
+from collections import OrderedDict
 from base64 import urlsafe_b64encode as b64
 from random import randint
 
@@ -16,11 +18,19 @@ api = Api(blueprint, version="0.1", title="Nowcode API")
 app.register_blueprint(blueprint)
 
 ns_buffers = api.namespace("buffers", description="Shared text buffers")
+ns_check = api.namespace("check", description="Syntax checking")
 
 buffer_model = api.model("Buffer",
     {
         "buffer_id": fields.String(description="Unique identifier (url)", required=True),
-        "content": fields.String(description="All text in buffer", required=True)
+        "content": fields.String(description="All text in buffer", required=True),
+        "language": fields.String(description="Programming lanugage used in buffer")
+    })
+
+check_model = api.inherit("Check", buffer_model,
+    {
+        "status" : fields.Integer(description="0 for success", readOnly=True),
+        "message": fields.String(description="Stacktrace, error message, or similar", readOnly=True)
     })
 
 
@@ -32,6 +42,26 @@ def new_buffer():
         if s not in buffers:
             buffers[s] = ""
             return s
+
+def get_request_json():
+    if type(request.json) is str:
+        return json.loads(request.json)
+    elif type(request.json) is dict:
+        return request.json
+    return None
+
+def syntax_check(code, language):
+    message = "Success!"
+    status = 0
+    if language != "python3":
+        return  -1, "Language not supported!"
+    try:
+        ast.parse(code)
+    except SyntaxError as e:
+        message = str(e)
+        status = -1
+    return status, message
+
 # API
 @ns_buffers.route("/<string:buffer_id>")
 class Buffer(Resource):
@@ -50,16 +80,29 @@ class Buffer(Resource):
         """Create or update a buffer"""
         if buffer_id not in buffers:
             print("Reviving session: {}".format(buffer_id))
-        if type(request.json) is str:
-            content = json.loads(request.json)["content"]
-        elif type(request.json) is dict:
-            content = request.json["content"]
-        else:
+        body = get_request_json()
+        if not body:
             return None
+        content = body["content"]
         buffers[buffer_id] = content
 
         response = {"buffer_id": buffer_id,
                     "content": buffers[buffer_id]}
+        return response
+
+@ns_check.route("/")
+class Check(Resource):
+    @ns_buffers.expect(buffer_model)
+    @ns_buffers.marshal_with(check_model, code=201)
+    def post(self):
+        """Syntax check a piece of code"""
+        body = get_request_json()
+        if not body:
+            return None
+        response = OrderedDict(body)
+        status, message = syntax_check(response["content"], response["language"])
+        response["status"] = status
+        response["message"] = message
         return response
 
 # Compatibility redirects:

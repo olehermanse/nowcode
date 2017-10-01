@@ -37,9 +37,16 @@ input, textarea {
   padding:0.5rem;
 }
 
-input[type="submit"] {
+button {
   background-color: #3B5998;
   color:white;
+  padding:0.5em;
+  border:none;
+  border-radius:2px;
+}
+
+#clipboardBtn {
+  background-color:rgb(150,150,150);
 }
 
 #editor {

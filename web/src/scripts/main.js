@@ -1,9 +1,22 @@
 (function(){
+  //// CLIPBOARD ////
+  let clipboard = require('../../node_modules/clipboard-js/clipboard.js');
+  let clipboardBtn = document.getElementById('clipboardBtn');
+  let shareLink = document.getElementById('shareLink');
+  shareLink.value = window.location.host + window.location.pathname
+  clipboardBtn.addEventListener('click', function(){
+    clipboard.copy(shareLink.value);
+  });
+
+  let createNewBtn = document.getElementById('createNewBtn');
+  createNewBtn.addEventListener('click', function(){
+    window.location.replace('/');
+  });
+
+  //// EDITOR ////
   let aceEditor = require('../../node_modules/ace-builds/src-min-noconflict/ace.js');
   window.editor = ace.edit('editor');
-  var shareLink = document.getElementById('shareLink');
 
-  shareLink.value = window.location.host + window.location.pathname
 
   var hasChangedSinceGet = false;
   window.currentText = window.editor.getValue();

@@ -10,10 +10,12 @@ from collections import OrderedDict
 from base64 import urlsafe_b64encode as b64
 from random import randint
 import time
+from flask_compress import Compress
 
 buffers = {}
 
 app = Flask(__name__, static_url_path='', static_folder='web/dist')
+Compress(app)
 blueprint = Blueprint('api', __name__, url_prefix='/api')
 api = Api(blueprint, version="0.1", title="Nowcode API")
 app.register_blueprint(blueprint)
@@ -101,6 +103,7 @@ class Buffer(Resource):
         """Create or update a buffer"""
         if buffer_id not in buffers:
             print("Reviving session: {}".format(buffer_id))
+            buffers[buffer_id] = empty_buffer(buffer_id)
         body = get_request_json()
         if not body:
             return None

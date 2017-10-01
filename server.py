@@ -140,15 +140,6 @@ class Cursor(Resource):
         buffers[buffer_id]["cursors"][tab_id] = cursor_body
         return cursor_body
 
-# Compatibility redirects:
-@app.route('/data/<string:buffer_id>', methods=["GET"])
-def get_content(buffer_id):
-    return redirect("/api/buffers/{}".format(buffer_id))
-
-@app.route("/<string:buffer_id>", methods=['POST'])
-def post_data(buffer_id):
-    return redirect("/api/buffers/{}".format(buffer_id))
-
 # Web server:
 @app.route('/')
 def root():

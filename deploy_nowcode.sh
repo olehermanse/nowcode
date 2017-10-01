@@ -1,7 +1,9 @@
 #!/usr/bin/env sh
-set -e
 
-killall python3
+
+killall python3 || echo "Warning: did not find a python3 process to kill"
+
+set -e
 
 cd /root/nowcode/
 rm -f nohup.out

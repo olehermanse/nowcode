@@ -2,8 +2,8 @@
 
 set -e
 
-apt install npm
-apt install node
+apt install -y npm
+apt install -y nodejs
 cd /root/nowcode/web/
 npm install
 gulp

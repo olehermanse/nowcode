@@ -55,13 +55,10 @@ gulp.task('html', function() {
 
 gulp.task('inline', function() {
   htmlpath = path.resolve('dist/index.html');
-  console.log(htmlpath);
   inline(htmlpath, {
     compress: true,
     rootpath: path.resolve('dist'),
   }, function(err, html){
-    console.log(err);
-    console.log(html);
     fs.writeFileSync('dist/index.html', html);
   });
 });

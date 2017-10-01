@@ -44,7 +44,7 @@
     });
     xhr.send(data);
   }
-
+  console.log(test);
   function synchronize() {
     console.log("synchronize");
     var url = '/api/buffers/' + getBufferID();

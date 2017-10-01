@@ -13,12 +13,16 @@
     "babelify": "^7.3.0",
     "browserify": "^14.4.0",
     "del": "^3.0.0",
+    "fs": "0.0.1-security",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-rename": "^1.2.2",
+    "gulp-sequence": "^0.4.6",
     "gulp-sourcemaps": "^2.6.1",
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.8",
+    "inline-source": "^5.2.4",
+    "path": "^0.12.7",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   }

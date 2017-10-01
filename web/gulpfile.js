@@ -8,14 +8,18 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     sourcemaps = require('gulp-sourcemaps'),
     gutil = require('gulp-util'),
-    babelify = require('babelify');
+    babelify = require('babelify'),
+    inline = require('inline-source'),
+    fs = require('fs'),
+    path = require('path');
+    gulpSequence = require('gulp-sequence');
 
 gulp.task('default', function() {
-  gulp.start('styles', 'scripts', 'html');
+  gulpSequence(['styles', 'scripts', 'html'], 'inline')();
 });
 
 gulp.task('watch', function() {
-  gulp.watch('src/**/*', ['default']);
+  gulp.watch(['src/**/*'], ['default']);
 });
 
 gulp.task('styles', function() {
@@ -42,13 +46,23 @@ gulp.task('scripts', function() {
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./dist/scripts'));
 
-  //return gulp.src('src/scripts/**/*.js')
-  //  .pipe(concat('main.js'))
-  //  .pipe(gulp.dest('dist/scripts'));
 });
 
 gulp.task('html', function() {
   return gulp.src('src/index.html')
     .pipe(gulp.dest('dist'));
+});
+
+gulp.task('inline', function() {
+  htmlpath = path.resolve('dist/index.html');
+  console.log(htmlpath);
+  inline(htmlpath, {
+    compress: true,
+    rootpath: path.resolve('dist'),
+  }, function(err, html){
+    console.log(err);
+    console.log(html);
+    fs.writeFileSync('dist/index.html', html);
+  });
 });
 

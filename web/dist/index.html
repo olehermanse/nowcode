@@ -4,8 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>Nowco.de</title>
-  <link rel="stylesheet" type="text/css" href="/styles/style.css" />
-
+  <style type="text/css">html{font-family:sans-serif}body{background-color:#e3e3e3}body>*{max-width:800px;margin-left:auto;margin-right:auto}textarea{width:100%;box-sizing:border-box;border:.1rem solid #d2d2d2;padding:.5rem}h1>span{color:#00f}.card,input,textarea{background-color:#fff;border-radius:2px}.card{margin-top:.5rem;margin-bottom:.5rem;border-bottom:2px solid #d2d2d2;padding:1rem}input{border:.1rem solid #d2d2d2;padding:.5rem}input[type=submit]{background-color:#3b5998;color:#fff}</style>
 </head>
 <body>
   <div>
@@ -31,6 +30,6 @@
     </a>
   </div>
 
-  <script src="/scripts/main.js"></script>
+  <script>!function e(n,t,o){function r(u,a){if(!t[u]){if(!n[u]){var s="function"==typeof require&&require;if(!a&&s)return s(u,!0);if(i)return i(u,!0);var c=new Error("Cannot find module '"+u+"'");throw c.code="MODULE_NOT_FOUND",c}var d=t[u]={exports:{}};n[u][0].call(d.exports,function(e){return r(n[u][1][e]||e)},d,d.exports,e,n,t,o)}return t[u].exports}for(var i="function"==typeof require&&require,u=0;u<o.length;u++)r(o[u]);return r}({1:[function(e,n,t){"use strict";!function(){function e(){var e=window.location.pathname;return e.substr(1,e.length-1)}function n(){var n=new XMLHttpRequest,t="/api/buffers/"+e(),o=document.getElementById("editorCode").value;n.open("POST",t,!0),n.setRequestHeader("Content-type","application/json"),n.onreadystatechange=function(){4===n.readyState&&200===n.status&&JSON.parse(n.responseText)};var r=JSON.stringify({content:o,buffer_id:e()});n.send(r)}function t(){console.log("synchronize");var n="/api/buffers/"+e(),o=new XMLHttpRequest;o.open("GET",n,!0),o.responseType="json",o.onload=function(){200===o.status&&0==r?document.getElementById("editorCode").value=o.response.content:console.log("Failed synchronization"),setTimeout(t,150)},o.send(),r=!1}document.getElementById("shareLink").value=window.location.host+window.location.pathname;var o=document.getElementById("editorCode"),r=!1;o.addEventListener("input",function(){r=!0,n()}),o.addEventListener("keyup",function(){r=!0,n()}),o.addEventListener("change",function(){r=!0,n()}),t()}()},{}]},{},[1]);</script>
 </body>
 </html>

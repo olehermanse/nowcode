@@ -17,6 +17,7 @@ deploy-branch:
 	echo "Deploying current branch"
 	echo "Please note that master branch is automatically redeployed every hour"
 	pip3 install -r requirements.txt
+	bash web.sh
 	nohup python3 /root/nowcode/server.py --release --port 80 --ip 0.0.0.0 &
 
 docs: public swagger.json

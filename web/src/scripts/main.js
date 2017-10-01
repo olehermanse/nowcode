@@ -6,10 +6,16 @@
   shareLink.value = window.location.host + window.location.pathname
 
   var hasChangedSinceGet = false;
+  window.currentText = window.editor.getValue();
 
   window.editor.on("change", function(){
     hasChangedSinceGet = true;
-    updateServer();
+    console.log(window.currentText);
+    console.log(window.editor.getValue());
+    if(window.currentText != window.editor.getValue()){
+      updateServer();
+      window.currentText = window.editor.getValue();
+    }
   });
 
   function getBufferID() {
@@ -45,11 +51,15 @@
       xhr.responseType = 'json';
       xhr.onload = function() {
         var status = xhr.status;
+        console.log(hasChangedSinceGet);
         if (status === 200 && hasChangedSinceGet == false) {
           const cursorPos = window.editor.getCursorPosition();
-          window.editor.setValue(xhr.response["content"]);
-          window.editor.clearSelection();
-          window.editor.moveCursorToPosition(cursorPos);
+          if(xhr.response["content"] != window.editor.getValue()){
+            console.log("updated text");
+            window.editor.setValue(xhr.response["content"]);
+            window.editor.clearSelection();
+            window.editor.moveCursorToPosition(cursorPos);
+          }
         } else {
           console.log('Failed synchronization');
         }

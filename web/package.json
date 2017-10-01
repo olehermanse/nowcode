@@ -16,6 +16,7 @@
     "del": "^3.0.0",
     "fs": "0.0.1-security",
     "gulp": "^3.9.1",
+    "gulp-cli": "^1.4.0",
     "gulp-concat": "^2.6.1",
     "gulp-rename": "^1.2.2",
     "gulp-sequence": "^0.4.6",

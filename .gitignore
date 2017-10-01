@@ -111,3 +111,6 @@ ENV/
 
 # NodeJS / NPM modules
 node_modules
+
+# Dist files
+dist

@@ -55,7 +55,6 @@ gulp.task('html', function() {
 
 gulp.task('inline', function() {
   htmlpath = path.resolve('dist/index.html');
-  console.log(htmlpath);
   inline(htmlpath, {
     compress: true,
     rootpath: path.resolve('dist'),

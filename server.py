@@ -10,10 +10,12 @@ from collections import OrderedDict
 from base64 import urlsafe_b64encode as b64
 from random import randint
 import time
+from flask_compress import Compress
 
 buffers = {}
 
 app = Flask(__name__, static_url_path='', static_folder='web/dist')
+Compress(app)
 blueprint = Blueprint('api', __name__, url_prefix='/api')
 api = Api(blueprint, version="0.1", title="Nowcode API")
 app.register_blueprint(blueprint)

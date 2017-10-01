@@ -103,6 +103,7 @@ class Buffer(Resource):
         """Create or update a buffer"""
         if buffer_id not in buffers:
             print("Reviving session: {}".format(buffer_id))
+            buffers[buffer_id] = empty_buffer(buffer_id)
         body = get_request_json()
         if not body:
             return None

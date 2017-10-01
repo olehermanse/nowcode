@@ -1,20 +1,13 @@
 (function(){
+  let aceEditor = require('../../node_modules/ace-builds/src-min-noconflict/ace.js');
+  window.editor = ace.edit('editor');
   var shareLink = document.getElementById('shareLink');
+
   shareLink.value = window.location.host + window.location.pathname
 
-  var editorCode = document.getElementById('editorCode');
   var hasChangedSinceGet = false;
-  editorCode.addEventListener("input", function() {
-    hasChangedSinceGet = true;
-    updateServer();
-  });
 
-  editorCode.addEventListener("keyup", function() {
-    hasChangedSinceGet = true;
-    updateServer();
-  });
-
-  editorCode.addEventListener("change", function() {
+  window.editor.on("change", function(){
     hasChangedSinceGet = true;
     updateServer();
   });
@@ -28,8 +21,7 @@
   function updateServer() {
     var xhr = new XMLHttpRequest();
     var url = '/api/buffers/' + getBufferID();
-    var editorCode = document.getElementById('editorCode');
-    var content = editorCode.value;
+    var content = window.editor.getValue();
 
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-type", "application/json");
@@ -54,8 +46,10 @@
       xhr.onload = function() {
         var status = xhr.status;
         if (status === 200 && hasChangedSinceGet == false) {
-          var editorCode = document.getElementById('editorCode');
-          editorCode.value = xhr.response["content"]
+          const cursorPos = window.editor.getCursorPosition();
+          window.editor.setValue(xhr.response["content"]);
+          window.editor.clearSelection();
+          window.editor.moveCursorToPosition(cursorPos);
         } else {
           console.log('Failed synchronization');
         }

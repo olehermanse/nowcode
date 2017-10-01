@@ -60,8 +60,6 @@ gulp.task('inline', function() {
     compress: true,
     rootpath: path.resolve('dist'),
   }, function(err, html){
-    console.log(err);
-    console.log(html);
     fs.writeFileSync('dist/index.html', html);
   });
 });

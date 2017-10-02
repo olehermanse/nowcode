@@ -1,5 +1,8 @@
 default: run-server
 
+web/dist: web/src/*
+	bash -c "cd web && npm install && gulp"
+
 run-server:
 	python3 server.py
 

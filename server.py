@@ -11,6 +11,7 @@ from base64 import urlsafe_b64encode as b64
 from random import randint
 import time
 from flask_compress import Compress
+import random
 
 buffers = {}
 
@@ -37,6 +38,7 @@ buffer_model = api.model("Buffer",
         "buffer_id": fields.String(description="Unique identifier (url).", required=True),
         "content":   fields.String(description="All text in buffer.", required=True),
         "language":  fields.String(description="Programming lanugage used in buffer."),
+        "sync_time": fields.Integer(description="Only POST to up-to-date sync_time is allowed.", required=True),
         "cursors":   fields.Raw(description="All active cursors (users).", readOnly=True)
     })
 
@@ -53,6 +55,7 @@ def empty_buffer(buffer_id):
     return {
         "content":   "",
         "buffer_id": buffer_id,
+        "sync_time": int(round(time.time() * 1000)),
         "cursors":   {}
     }
 
@@ -90,7 +93,7 @@ def syntax_check(code, language):
 # API
 @ns_buffers.route("/<string:buffer_id>")
 class Buffer(Resource):
-    @ns_buffers.marshal_with(buffer_model, code=201)
+    @ns_buffers.marshal_with(buffer_model, code=200)
     def get(self, buffer_id):
         """Get all content of a buffer"""
         if buffer_id not in buffers:
@@ -98,7 +101,7 @@ class Buffer(Resource):
         return buffers[buffer_id]
 
     @ns_buffers.expect(buffer_model)
-    @ns_buffers.marshal_with(buffer_model, code=201)
+    @ns_buffers.marshal_with(buffer_model, code=200)
     def post(self, buffer_id):
         """Create or update a buffer"""
         if buffer_id not in buffers:
@@ -106,23 +109,26 @@ class Buffer(Resource):
             buffers[buffer_id] = empty_buffer(buffer_id)
         body = get_request_json()
         if not body:
-            return None
+            return None, 404
+        if body["sync_time"] != buffers[buffer_id]["sync_time"]:
+            return buffers[buffer_id], 200
         content = body["content"]
         buffers[buffer_id]["content"] = content
+        buffers[buffer_id]["sync_time"] = timestamp()
 
-        response = {"buffer_id": buffer_id,
-                    "content": content}
-        return response
+        print("Successful POST:")
+        print(buffers[buffer_id])
+        return buffers[buffer_id]
 
 @ns_check.route("/")
 class Check(Resource):
     @ns_buffers.expect(buffer_model)
-    @ns_buffers.marshal_with(check_model, code=201)
+    @ns_buffers.marshal_with(check_model, code=200)
     def post(self):
         """Syntax check a piece of code"""
         body = get_request_json()
         if not body:
-            return None
+            return None, 404
         response = OrderedDict(body)
         status, message = syntax_check(response["content"], response["language"])
         response["status"] = status
@@ -132,11 +138,11 @@ class Check(Resource):
 @ns_cursors.route("/<string:buffer_id>")
 class Cursor(Resource):
     @ns_cursors.expect(cursor_model)
-    @ns_cursors.marshal_with(cursor_model, code=201)
+    @ns_cursors.marshal_with(cursor_model, code=200)
     def post(self, buffer_id):
         """Create or update a cursor"""
         if buffer_id not in buffers:
-            return None
+            return None, 404
         cursor_body = get_request_json()
         tab_id = cursor_body["tab_id"]
         cursor_body["lastseen"] = timestamp()

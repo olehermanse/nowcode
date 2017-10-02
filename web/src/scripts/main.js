@@ -16,6 +16,7 @@
   //// EDITOR ////
   let aceEditor = require('../../node_modules/ace-builds/src-min-noconflict/ace.js');
   window.editor = ace.edit('editor');
+  let editorElement = document.getElementById('editor');
 
 
   var hasChangedSinceGet = false;
@@ -24,11 +25,25 @@
                      "sync_time": 0,
                      "cursors":   {}
   };
+  var fuckingStopAce = false;
 
-  window.editor.on("change", function(){
-    hasChangedSinceGet = true;
-    updateServer();
+  window.editor.on('change', function(){
+    if (fuckingStopAce != true){
+      changeEvent();
+    }
   });
+
+  function changeEvent(){
+    hasChangedSinceGet = true;
+    var gv = window.editor.getValue();
+    if (gv == null){
+        return;
+    }
+    if (localBuffer["content"] == gv){
+        return;
+    }
+    updateServer();
+  }
 
   function getBufferID() {
     var pathname = window.location.pathname;
@@ -40,10 +55,15 @@
       if (hasChangedSinceGet == true){
         console.log("User is writing, delaying update to buffer.");
       }
+      else if (remoteBuffer["content"] == null){
+        console.log("Invalid remote buffer received, ignoring.")
+      }
       else if (remoteBuffer["sync_time"] > localBuffer["sync_time"]){
           localBuffer = remoteBuffer;
           const cursorPos = window.editor.getCursorPosition();
+          fuckingStopAce = true;
           window.editor.setValue(remoteBuffer["content"]);
+          fuckingStopAce = false;
           window.editor.clearSelection();
           window.editor.moveCursorToPosition(cursorPos);
       }

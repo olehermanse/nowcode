@@ -16,20 +16,34 @@
   //// EDITOR ////
   let aceEditor = require('../../node_modules/ace-builds/src-min-noconflict/ace.js');
   window.editor = ace.edit('editor');
+  let editorElement = document.getElementById('editor');
 
 
   var hasChangedSinceGet = false;
-  window.currentText = window.editor.getValue();
+  var localBuffer = {"content":   "",
+                     "buffer_id": getBufferID(),
+                     "sync_time": 0,
+                     "cursors":   {}
+  };
+  var fuckingStopAce = false;
 
-  window.editor.on("change", function(){
-    hasChangedSinceGet = true;
-    console.log(window.currentText);
-    console.log(window.editor.getValue());
-    if(window.currentText != window.editor.getValue()){
-      updateServer();
-      window.currentText = window.editor.getValue();
+  window.editor.on('change', function(){
+    if (fuckingStopAce != true){
+      changeEvent();
     }
   });
+
+  function changeEvent(){
+    hasChangedSinceGet = true;
+    var gv = window.editor.getValue();
+    if (gv == null){
+        return;
+    }
+    if (localBuffer["content"] == gv){
+        return;
+    }
+    updateServer();
+  }
 
   function getBufferID() {
     var pathname = window.location.pathname;
@@ -37,42 +51,54 @@
     return bufferID;
   }
 
+  function updateLocal(remoteBuffer) {
+      if (hasChangedSinceGet == true){
+        console.log("User is writing, delaying update to buffer.");
+      }
+      else if (remoteBuffer["content"] == null){
+        console.log("Invalid remote buffer received, ignoring.")
+      }
+      else if (remoteBuffer["sync_time"] > localBuffer["sync_time"]){
+          localBuffer = remoteBuffer;
+          const cursorPos = window.editor.getCursorPosition();
+          fuckingStopAce = true;
+          window.editor.setValue(remoteBuffer["content"]);
+          fuckingStopAce = false;
+          window.editor.clearSelection();
+          window.editor.moveCursorToPosition(cursorPos);
+      }
+  }
+
+  function updateSyncTime(buffer){
+      localBuffer["sync_time"] = buffer["sync_time"];
+  }
+
   function updateServer() {
     var xhr = new XMLHttpRequest();
     var url = '/api/buffers/' + getBufferID();
-    var content = window.editor.getValue();
+    var content = localBuffer["content"] = window.editor.getValue();
 
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-type", "application/json");
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4 && xhr.status === 200) {
         var json = JSON.parse(xhr.responseText);
+        updateSyncTime(json);
       }
     };
-    var data = JSON.stringify({
-      "content": content,
-      "buffer_id": getBufferID(),
-    });
+    var data = JSON.stringify(localBuffer);
     xhr.send(data);
   }
 
   function synchronize() {
-    console.log("synchronize");
     var url = '/api/buffers/' + getBufferID();
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
       xhr.responseType = 'json';
       xhr.onload = function() {
         var status = xhr.status;
-        console.log(hasChangedSinceGet);
-        if (status === 200 && hasChangedSinceGet == false) {
-          const cursorPos = window.editor.getCursorPosition();
-          if(xhr.response["content"] != window.editor.getValue()){
-            console.log("updated text");
-            window.editor.setValue(xhr.response["content"]);
-            window.editor.clearSelection();
-            window.editor.moveCursorToPosition(cursorPos);
-          }
+        if (status === 200) {
+          updateLocal(xhr.response);
         } else {
           console.log('Failed synchronization');
         }

@@ -154,14 +154,8 @@ class Cursor(Resource):
 def root():
     return redirect("/{}".format(new_buffer()))
 
-@app.route('/new')
-def new():
-    return redirect("/{}".format(new_buffer()))
-
 @app.route('/<string:buffer_id>', methods=["GET"])
 def editor(buffer_id):
-    if buffer_id not in buffers:
-        return redirect("/")
     return app.send_static_file('index.html')
 
 def get_args():

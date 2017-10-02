@@ -1,6 +1,9 @@
 default: run-server
 
-run-server:
+web/dist: web/src/* web/gulpfile.js web/package.json
+	bash -c "cd web && npm install && gulp"
+
+run-server: web/dist
 	python3 server.py
 
 swagger.json: server.py

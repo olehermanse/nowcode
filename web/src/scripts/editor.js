@@ -5,7 +5,7 @@ window.editor = ace.edit('editor');
 const pathname = window.location.pathname;
 const bufferID = pathname.substr(1, pathname.length -1);
 const apiURL = '/api/buffers/' + bufferID;
-window.currentEditorData = '';
+window.aceEditorSetValue = false;
 
 function updateServer() {
   const xhr = new XMLHttpRequest();
@@ -31,30 +31,27 @@ function synchronize() {
     xhr.responseType = 'json';
     xhr.onload = function() {
       const status = xhr.status;
-      console.log("editor.getValue: " + window.editor.getValue());
-      console.log("currentEditorData" + window.currentEditorData);
-
       if (status === 200) {
-        console.log("Synchronization successful");
         const cursorPos = window.editor.getCursorPosition();
         const content = xhr.response['content'];
         window.currentEditorData = content;
+        window.aceEditorSetValue = true;
         window.editor.setValue(content);
+        window.aceEditorSetValue = false;
         window.editor.clearSelection();
         window.editor.moveCursorToPosition(cursorPos);
 
       } else if (status !== 200) {
         console.log('Failed synchronization');
       }
-      setTimeout(synchronize, 3000);
     };
   xhr.send();
 }
-synchronize();
+setInterval(() => {synchronize()}, 150);
 
 window.editor.on('change', () => {
   // setValue triggers change event, this way we prevent it from making another update to the server. Creating a loop.
-  if(window.editor.currentEditorData === window.editor.getValue()){
+  if(window.aceEditorSetValue){
     return;
   }
 

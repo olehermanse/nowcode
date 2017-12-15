@@ -4,10 +4,10 @@ web/dist: web/src/*
 	bash -c "cd web && npm install && gulp"
 
 run-server:
-	python3 server.py
+	python3 nowcode_server
 
-swagger.json: server.py
-	python3 server.py --docs > swagger.json
+swagger.json: nowcode_server
+	python3 nowcode_server --docs > swagger.json
 
 public: swagger.json
 	spectacle swagger.json

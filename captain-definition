@@ -2,17 +2,14 @@
   "schemaVersion" :1 ,
   "dockerfileLines" :[
     "FROM ubuntu:latest",
-    "RUN mkdir -p /usr/src/app",
-    "WORKDIR /usr/src/app",
+    "WORKDIR /nowcode",
+    "ADD ./src /nowcode",
     "RUN apt-get update -y",
-    "RUN apt-get install -y python3-pip python3-dev",
-    "COPY ./src/requirements.txt /usr/src/nowcode/",
+    "RUN apt-get install -y python3 python3-pip python3-dev",
     "RUN pip3 install -r requirements.txt",
-    "COPY ./src /usr/src/nowcode",
     "ENV NODE_ENV production",
     "ENV PORT 80",
     "EXPOSE 80",
-    "ENTRYPOINT [\"python3\"]"
-    "CMD [ \"nowcode_server --release --port 80 --ip 0.0.0.0\"]"
+    "CMD [\"python3\", \"nowcode_server\", \"--release\", \"--port\", \"80\", \"--ip\", \"0.0.0.0\"]"
   ]
 }

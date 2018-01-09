@@ -3,7 +3,7 @@
   "dockerfileLines" :[
     "FROM ubuntu:latest",
     "WORKDIR /nowcode",
-    "make web/dist",
+    "RUN make web/dist",
     "ADD ./src /nowcode",
     "RUN apt-get update -y",
     "RUN apt-get install -y python3 python3-pip python3-dev",

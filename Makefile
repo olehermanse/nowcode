@@ -1,7 +1,8 @@
 default: run-server
 
 web/dist: web/src/*
-	bash -c "cd web && npm install && npm run gulp"
+	sh -c "cd web && npm install"
+	sh -c "cd web && npm run gulp"
 	rm -rf nowcode_server/web
 	mkdir nowcode_server/web
 	cp -r web/dist nowcode_server/web

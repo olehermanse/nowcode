@@ -7,7 +7,6 @@ var gulp = require('gulp'),
     buffer = require('vinyl-buffer'),
     uglify = require('gulp-uglify'),
     sourcemaps = require('gulp-sourcemaps'),
-    gutil = require('gulp-util'),
     babelify = require('babelify'),
     inline = require('inline-source'),
     fs = require('fs'),
@@ -42,7 +41,6 @@ gulp.task('scripts', function() {
     .pipe(buffer())
     .pipe(sourcemaps.init({loadmaps: true}))
       .pipe(uglify())
-      .on('error', gutil.log)
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./dist/scripts'));
 

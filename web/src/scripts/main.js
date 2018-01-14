@@ -6,5 +6,4 @@
   createNewBtn.addEventListener('click', () => {
     window.location.replace('/');
   });
-
 })();

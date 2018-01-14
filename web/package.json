@@ -23,7 +23,6 @@
     "gulp-sequence": "^0.4.6",
     "gulp-sourcemaps": "^2.6.1",
     "gulp-uglify": "^3.0.0",
-    "gulp-util": "^3.0.8",
     "inline-source": "^5.2.4",
     "path": "^0.12.7",
     "vinyl-buffer": "^1.0.0",

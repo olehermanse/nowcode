@@ -110,8 +110,11 @@ class Buffer(Resource):
         body = get_request_json()
         if not body:
             return None, 404
-        if body["sync_time"] != buffers[buffer_id]["sync_time"]:
+        if "sync_time" in body and body["sync_time"] != buffers[buffer_id]["sync_time"]:
             return buffers[buffer_id], 200
+        if "content" not in body:
+            return None, 404
+
         content = body["content"]
         buffers[buffer_id]["content"] = content
         buffers[buffer_id]["sync_time"] = timestamp()

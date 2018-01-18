@@ -6,10 +6,11 @@ window.editor = ace.edit('editor');
 
 const pathname = window.location.pathname;
 const bufferID = pathname.substr(1, pathname.length -1);
+
 const apiURL = '/api/buffers/' + bufferID;
 window.POSTinProgress = false;
 
-
+window.currentSyncTime = 0;
 window.currentEditorData = '';
 
 var enableAndFocusEditor = function() {
@@ -38,6 +39,11 @@ function synchronize() {
       if (status === 200) {
         const cursorPos = window.editor.getCursorPosition();
         const content = xhr.response['content'];
+        const sync = parseInt(xhr.response['sync_time']);
+        if (sync <= currentSyncTime) {
+          return; // Outdated GET data, do nothing, wait for next
+        }
+        window.currentSyncTime = sync;
         window.currentEditorData = content;
         window.editor.setValue(content);
         window.editor.clearSelection();
@@ -61,6 +67,7 @@ function updateServer() {
   xhr.onreadystatechange = () => {
     if (xhr.readyState === 4 && xhr.status === 200) {
       const response = JSON.parse(xhr.responseText);
+      window.currentSyncTime = response["sync_time"];
     }
     console.log("POST NOT IN PROGRESS ANYMORE")
     window.POSTinProgress = false;
@@ -68,6 +75,7 @@ function updateServer() {
   const data = JSON.stringify({
     "content": content,
     "buffer_id": bufferID,
+    "sync_time": window.currentSyncTime
   });
   xhr.send(data);
 }

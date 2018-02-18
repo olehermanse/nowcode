@@ -2,8 +2,6 @@ require('../../node_modules/ace-builds/src-min-noconflict/ace.js');
 
 window.editor = ace.edit('editor');
 
-
-
 const pathname = window.location.pathname;
 const bufferID = pathname.substr(1, pathname.length -1);
 
@@ -43,11 +41,11 @@ function synchronize() {
         if (sync <= currentSyncTime) {
           return; // Outdated GET data, do nothing, wait for next
         }
-        window.currentSyncTime = sync;
         window.currentEditorData = content;
         window.editor.setValue(content);
         window.editor.clearSelection();
         window.editor.moveCursorToPosition(cursorPos);
+        window.currentSyncTime = sync;
 
       } else if (status !== 200) {
         console.log('Failed synchronization');

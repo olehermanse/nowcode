@@ -117,11 +117,13 @@ class Buffer(Resource):
         if body["sync_time"] != buffers[buffer_id]["sync_time"]:
             return buffers[buffer_id], 200
 
+        print("Accepted timestamp: {}".format(body["sync_time"]))
+
         content = body["content"]
         buffers[buffer_id]["content"] = content
         buffers[buffer_id]["sync_time"] = timestamp()
 
-        print("Successful POST:")
+        print("Successful POST, new buffer:")
         print(buffers[buffer_id])
         return buffers[buffer_id]
 

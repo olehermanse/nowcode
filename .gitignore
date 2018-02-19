@@ -112,6 +112,9 @@ ENV/
 # NodeJS / NPM modules
 node_modules
 
+# npm package-locks
+package-lock.json
+
 # Dist files
 dist
 nowcode.tar

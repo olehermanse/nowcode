@@ -8,18 +8,18 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     sourcemaps = require('gulp-sourcemaps'),
     babelify = require('babelify'),
-    inline = require('inline-source'),
+    inline = require('gulp-inline-source'),
     fs = require('fs'),
     path = require('path');
-    gulpSequence = require('gulp-sequence');
 
-gulp.task('default', function() {
-  gulpSequence(['styles', 'scripts', 'html'], 'inline')();
+gulp.task('default', function(done) {
+  gulp.series(['styles', 'scripts', 'html'], 'inline')();
+  done();
 });
 
-gulp.task('watch', ['default'], function() {
+gulp.task('watch', gulp.series('default', function() {
   gulp.watch(['src/**/*'], ['default']);
-});
+}));
 
 gulp.task('styles', function() {
   return gulp.src('src/styles/**/*.css')
@@ -51,7 +51,7 @@ gulp.task('html', function() {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('inline', function() {
+gulp.task('inline', function(done) {
   htmlpath = path.resolve('dist/index.html');
   inline(htmlpath, {
     compress: true,
@@ -59,5 +59,5 @@ gulp.task('inline', function() {
   }, function(err, html){
     fs.writeFileSync('dist/index.html', html);
   });
+  done();
 });
-

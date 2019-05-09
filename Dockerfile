@@ -1,13 +1,16 @@
-FROM ubuntu:latest
+FROM node:8 AS build
 ADD ./ /nowcode
 WORKDIR /nowcode
-RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
-RUN apt-get install -y curl nodejs npm make
-RUN npm --version
-RUN make web/dist
-RUN apt-get install -y python3 python3-pip python3-dev
+RUN rm -rf web/dist
+RUN rm -rf nowcode_server/web
+RUN sh -c "cd web && npm install && npm run gulp"
+RUN mkdir nowcode_server/web
+RUN cp -r web/dist nowcode_server/web
+
+FROM python:3-alpine
+COPY --from=build /nowcode /nowcode
+WORKDIR /nowcode
 RUN pip3 install -r requirements.txt
-ENV NODE_ENV production
 ENV PORT 80
 EXPOSE 80
-CMD ["python3", "nowcode_server", "--release", "--port", "80", "--ip", "0.0.0.0"]
+CMD ["gunicorn", "-b", "0.0.0.0:80", "run:app"]

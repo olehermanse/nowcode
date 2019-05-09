@@ -156,29 +156,38 @@ class Cursor(Resource):
         buffers[buffer_id]["cursors"][tab_id] = cursor_body
         return cursor_body
 
+
 # Web server:
 @app.route('/')
 def root():
     return redirect("/{}".format(new_buffer()))
 
+
 @app.route('/<string:buffer_id>', methods=["GET"])
 def editor(buffer_id):
     return app.send_static_file('index.html')
 
+
 def get_args():
-    argparser = argparse.ArgumentParser(description='Nowcode webserver/backend')
-    argparser.add_argument('--ip',      '-i', help='IP', type=str, default="0.0.0.0")
-    argparser.add_argument('--port',    '-p', help='port number', type=int, default=5000)
-    argparser.add_argument('--release', '-r', help='Release mode', action="store_true")
-    argparser.add_argument('--docs',    '-d', help='Output docs', action="store_true")
+    argparser = argparse.ArgumentParser(
+        description='Nowcode webserver/backend')
+    argparser.add_argument(
+        '--ip', '-i', help='IP', type=str, default="0.0.0.0")
+    argparser.add_argument(
+        '--port', '-p', help='port number', type=int, default=5000)
+    argparser.add_argument(
+        '--release', '-r', help='Release mode', action="store_true")
+    argparser.add_argument(
+        '--docs', '-d', help='Output docs', action="store_true")
     args = argparser.parse_args()
     return args
+
 
 def start_server(ip, port):
     app.run(ip, port=port)
 
 
-if __name__ == "__main__":
+def main():
     args = get_args()
     app.config['RESTPLUS_VALIDATE'] = True
     if args.docs:
@@ -193,3 +202,7 @@ if __name__ == "__main__":
         app.config['DEBUG'] = True
         app.config['TEMPLATES_AUTO_RELOAD'] = True
     start_server(args.ip, args.port)
+
+
+if __name__ == "__main__":
+    main()

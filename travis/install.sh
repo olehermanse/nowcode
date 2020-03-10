@@ -10,6 +10,6 @@ fi
 
 npm install --global gulp-cli
 
-cd web || exit 1 ;
+cd frontend || exit 1 ;
 
 npm install --save-dev

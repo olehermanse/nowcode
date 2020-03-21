@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "(cd frontend && npm run build)",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node backend/app.js && mocha",
     "dev-server": "node dev-server.js",
     "server": "node backend/backend.js"
   },
@@ -21,5 +21,8 @@
   "homepage": "https://github.com/olehermanse/nowcode#readme",
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "mocha": "^7.1.1"
   }
 }

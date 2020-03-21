@@ -6,7 +6,7 @@
   "scripts": {
     "build": "(cd frontend && npm run build)",
     "test": "node backend/app.js && mocha",
-    "dev-server": "node dev-server.js",
+    "dev-server": "nodemon dev-server.js",
     "server": "node backend/backend.js"
   },
   "repository": {
@@ -23,6 +23,7 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "mocha": "^7.1.1"
+    "mocha": "^7.1.1",
+    "nodemon": "^2.0.2"
   }
 }

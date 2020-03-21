@@ -1,0 +1,25 @@
+{
+  "name": "nowcode",
+  "version": "0.2.0",
+  "description": "http://nowco.de",
+  "main": "index.js",
+  "scripts": {
+    "build": "(cd frontend && npm run build)",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev-server": "node dev-server.js",
+    "server": "node backend/backend.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olehermanse/nowcode.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/olehermanse/nowcode/issues"
+  },
+  "homepage": "https://github.com/olehermanse/nowcode#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

@@ -6,28 +6,19 @@ http://nowco.de
 
 Start the development server:
 ```
-make run-server
+npm run dev-server
 ```
 
-For development purposes it defaults to port 5000:
+For development purposes it defaults to port 3000:
 
-http://127.0.0.1:5000
+http://127.0.0.1:3000
 
-## Documentation
+## Containers
 
-### Interactive docs
+### docker
 
-Interactive documentation is served on the `/api` route of the dev server:
-
-http://127.0.0.1:5000/api
-
-Flask, Flask RESTPlus, and Swagger UI is used to achieve this.
-
-### Static docs
-
-Spectacle can be used to generate static docs:
 ```
-make docs
+docker build --tag nowcode -f ./Dockerfile && docker run -p 3000:80 --name nowcode --rm nowcode
 ```
 
-They can be found in the `docs` folder, but don't look as nice as the interactive Swagger UI documentation mentioned above.
+http://127.0.0.1:3000

@@ -1,10 +1,10 @@
 {
-  "name": "nowcode",
-  "version": "1.0.0",
+  "name": "nowcode-frontend",
+  "version": "0.2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "gulp": "gulp"
+    "build": "gulp"
   },
   "author": "",
   "license": "ISC",

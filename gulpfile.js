@@ -18,19 +18,19 @@ gulp.task('default', function(done) {
 });
 
 gulp.task('watch', gulp.series('default', function() {
-  gulp.watch(['src/**/*'], ['default']);
+  gulp.watch(['frontend/src/**/*'], ['default']);
 }));
 
 gulp.task('styles', function() {
-  return gulp.src('src/styles/**/*.css')
+  return gulp.src('frontend/src/styles/**/*.css')
     .pipe(concat('style.css'))
-    .pipe(gulp.dest('dist/styles'));
+    .pipe(gulp.dest('frontend/dist/styles'));
 });
 
 gulp.task('scripts', function() {
 
   var b = browserify({
-    entries: 'src/scripts/main.js',
+    entries: 'frontend/src/scripts/main.js',
     debug: true
   });
 
@@ -42,22 +42,22 @@ gulp.task('scripts', function() {
     .pipe(sourcemaps.init({loadmaps: true}))
       .pipe(uglify())
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('./dist/scripts'));
+    .pipe(gulp.dest('./frontend/dist/scripts'));
 
 });
 
 gulp.task('html', function() {
-  return gulp.src('src/index.html')
+  return gulp.src('frontend/src/index.html')
     .pipe(gulp.dest('dist'));
 });
 
 gulp.task('inline', function(done) {
-  htmlpath = path.resolve('dist/index.html');
+  htmlpath = path.resolve('frontend/dist/index.html');
   inline(htmlpath, {
     compress: true,
     rootpath: path.resolve('dist'),
   }, function(err, html){
-    fs.writeFileSync('dist/index.html', html);
+    fs.writeFileSync('frontend/dist/index.html', html);
   });
   done();
 });

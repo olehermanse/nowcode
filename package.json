@@ -4,7 +4,7 @@
   "description": "http://nowco.de",
   "main": "index.js",
   "scripts": {
-    "build": "(cd frontend && npm run build)",
+    "build": "gulp",
     "test": "node backend/app.js && mocha",
     "dev-server": "nodemon dev-server.js",
     "server": "node backend/backend.js"
@@ -20,7 +20,25 @@
   },
   "homepage": "https://github.com/olehermanse/nowcode#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "ace-builds": "^1.4.4",
+    "babel-preset-env": "^1.7.0",
+    "babelify": "^7.3.0",
+    "browserify": "^16.2.3",
+    "clipboard-js": "^0.3.5",
+    "del": "^3.0.0",
+    "fs": "0.0.1-security",
+    "gulp": "^4.0.2",
+    "gulp-cli": "^2.2.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-inline-source": "^4.0.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-sequence": "^0.4.6",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-uglify": "^3.0.2",
+    "path": "^0.12.7",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
   },
   "devDependencies": {
     "mocha": "^7.1.1",

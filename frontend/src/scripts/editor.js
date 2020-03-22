@@ -1,4 +1,4 @@
-require('../../node_modules/ace-builds/src-min-noconflict/ace.js');
+require('../../../node_modules/ace-builds/src-min-noconflict/ace.js');
 
 window.editor = ace.edit('editor');
 

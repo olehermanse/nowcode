@@ -1,11 +1,14 @@
 require('../../../node_modules/ace-builds/src-min-noconflict/ace.js');
+const LineBuffer = require('../../../libbuf/libbuf.js').LineBuffer;
+
+let buffer = null;
 
 window.editor = ace.edit('editor');
 
 const pathname = window.location.pathname;
 const bufferID = pathname.substr(1, pathname.length -1);
 
-const apiURL = '/api/buffers/' + bufferID;
+const apiURL = '/api/buffers/';// + bufferID;
 window.POSTinProgress = false;
 
 window.currentSyncTime = 0;
@@ -36,11 +39,8 @@ function synchronize() {
 
       if (status === 200) {
         const cursorPos = window.editor.getCursorPosition();
-        const content = xhr.response['content'];
-        const sync = parseInt(xhr.response['sync_time']);
-        if (sync <= currentSyncTime) {
-          return; // Outdated GET data, do nothing, wait for next
-        }
+        buffer = LineBuffer.from(xhr.response);
+        const content = buffer.render();
         window.currentEditorData = content;
         window.editor.setValue(content);
         window.editor.clearSelection();

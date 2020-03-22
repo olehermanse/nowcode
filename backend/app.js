@@ -8,7 +8,7 @@ buffer.insert("hello, world!");
 
 app.use(express.static("frontend/dist"));
 
-app.get("/api/buffer/new", (req, res) => res.send(buffer));
+app.get("/api/buffers", (req, res) => res.send(buffer));
 
 module.exports = {
   app

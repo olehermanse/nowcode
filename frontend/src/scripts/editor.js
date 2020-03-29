@@ -1,7 +1,9 @@
 require('../../../node_modules/ace-builds/src-min-noconflict/ace.js');
 const LineBuffer = require('../../../libbuf/libbuf.js').LineBuffer;
 
-let buffer = null;
+let buffer = new LineBuffer();
+let serverBuffer = null;
+let disableChangeEvent = false;
 
 window.editor = ace.edit('editor');
 
@@ -36,13 +38,15 @@ function synchronize() {
 
       if (status === 200) {
         const cursorPos = window.editor.getCursorPosition();
-        buffer = LineBuffer.from(xhr.response);
+        serverBuffer = LineBuffer.from(xhr.response);
+        buffer = serverBuffer.merge(buffer);
+
         const content = buffer.render();
-        window.currentEditorData = content;
+        disableChangeEvent = true;
         window.editor.setValue(content);
+        disableChangeEvent = false;
         window.editor.clearSelection();
         window.editor.moveCursorToPosition(cursorPos);
-        // window.currentSyncTime = sync;
 
       } else if (status !== 200) {
         console.log('Failed synchronization');
@@ -51,45 +55,37 @@ function synchronize() {
   xhr.send();
 }
 
-function updateServer() {
-  return;
+function userEdit(e) {
+  if (e.action === "insert"){
+    console.log(e);
+    let string = e.lines.join("\n");
+    buffer.insert(string, e.start.column);
+  }
+  else{
+    return;
+  }
+  let operation = buffer.operations[buffer.operations.length - 1];
+  console.log(operation);
 
-  window.POSTinProgress = true;
   const xhr = new XMLHttpRequest();
   const content = window.editor.getValue();
 
   xhr.open("POST", apiURL, true);
   xhr.setRequestHeader("Content-type", "application/json");
   xhr.onreadystatechange = () => {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      const response = JSON.parse(xhr.responseText);
-      window.currentSyncTime = response["sync_time"];
-    }
-    console.log("POST NOT IN PROGRESS ANYMORE")
-    window.POSTinProgress = false;
+    console.log("POST complete: " + xhr.status + ", " + xhr.responseText);
   };
-  const data = JSON.stringify({
-    "content": content,
-    "buffer_id": bufferID,
-    "sync_time": window.currentSyncTime
-  });
-  xhr.send(data);
+  xhr.send(operation.json());
 }
 
 setInterval(() => {synchronize()}, 150);
 
-window.editor.on('change', () => {
-  if (window.POSTinProgress){
-    console.log("POST IN PROGRESS");
+window.editor.on('change', (e) => {
+  if (disableChangeEvent) {
     return;
   }
 
-  // setValue triggers change event, this way we prevent it from making another update to the server. Creating a loop.
-  if(window.editor.currentEditorData === window.editor.getValue()){
-    return;
-  }
-
-  updateServer();
+  userEdit(e);
 });
 
 

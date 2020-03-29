@@ -48,7 +48,7 @@ gulp.task('scripts', function() {
 
 gulp.task('html', function() {
   return gulp.src('frontend/src/index.html')
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('./frontend/dist'));
 });
 
 gulp.task('inline', function(done) {

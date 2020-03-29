@@ -8,7 +8,7 @@ window.editor = ace.edit('editor');
 const pathname = window.location.pathname;
 const bufferID = pathname.substr(1, pathname.length -1);
 
-const apiURL = '/api/buffers/';// + bufferID;
+const apiURL = '/api/buffers/' + bufferID;
 window.POSTinProgress = false;
 
 window.currentSyncTime = 0;

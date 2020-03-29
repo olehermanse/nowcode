@@ -73,7 +73,7 @@ describe("LineBuffer", function() {
       assert.equal(
         new LineBuffer()
           .insert("a", 0)
-          .delete("a", 0)
+          .remove("a", 0)
           .render(),
         ""
       );
@@ -82,7 +82,7 @@ describe("LineBuffer", function() {
       assert.equal(
         new LineBuffer()
           .insert("hello world", 0)
-          .delete("hello ", 0)
+          .remove("hello ", 0)
           .render(),
         "world"
       );
@@ -91,7 +91,7 @@ describe("LineBuffer", function() {
       assert.equal(
         new LineBuffer()
           .insert("hello\nworld\n", 0)
-          .delete("hello\nworld\n", 0)
+          .remove("hello\nworld\n", 0)
           .render(),
         ""
       );
@@ -100,7 +100,7 @@ describe("LineBuffer", function() {
       assert.equal(
         new LineBuffer()
           .insert("hello\nworld", 0)
-          .delete("\n", 5)
+          .remove("\n", 5)
           .render(),
         "helloworld"
       );
@@ -109,8 +109,8 @@ describe("LineBuffer", function() {
       assert.equal(
         new LineBuffer()
           .insert("abcd", 0)
-          .delete("d", -1)
-          .delete("c", -1)
+          .remove("d", -1)
+          .remove("c", -1)
           .render(),
         "ab"
       );
@@ -119,8 +119,8 @@ describe("LineBuffer", function() {
       assert.equal(
         new LineBuffer()
           .insert("aaaa", 0)
-          .delete("A", 0)
-          .delete("b", 0)
+          .remove("A", 0)
+          .remove("b", 0)
           .render(),
         "aaaa"
       );
@@ -129,7 +129,7 @@ describe("LineBuffer", function() {
       assert.equal(
         new LineBuffer()
           .insert("aaaa", 0)
-          .delete("aa", -1) // Skip - there is only 1 'a' before end
+          .remove("aa", -1) // Skip - there is only 1 'a' before end
           .render(),
         "aaaa"
       );

@@ -9,8 +9,8 @@ class Operation {
         return Content.from(data);
       case "insert":
         return Insert.from(data);
-      case "delete":
-        return Delete.from(data);
+      case "remove":
+        return Remove.from(data);
       default:
         throw "Unkown operation: " + data.command;
     }
@@ -64,17 +64,17 @@ class Insert extends Operation {
   }
 }
 
-class Delete extends Operation {
+class Remove extends Operation {
   constructor(string, pos, time = new Date().toISOString()) {
     super();
     this.string = string;
     this.pos = pos;
     this.time = time;
-    this.command = "delete";
+    this.command = "remove";
   }
 
   static from(data) {
-    return new Delete(data.string, data.pos, data.time);
+    return new Remove(data.string, data.pos, data.time);
   }
 
   apply(content) {
@@ -151,8 +151,8 @@ class LineBuffer {
     return this;
   }
 
-  delete(data, pos) {
-    this.operations.push(new Delete(data, pos));
+  remove(data, pos) {
+    this.operations.push(new Remove(data, pos));
     return this;
   }
 

@@ -63,7 +63,7 @@ function userEdit(e) {
   } else if (e.action === "remove"){
     console.log(e);
     let string = e.lines.join("\n");
-    buffer.delete(string, e.start.column);
+    buffer.remove(string, e.start.column);
   } else {
     return;
   }

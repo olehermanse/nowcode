@@ -28,9 +28,6 @@ var enableAndFocusEditor = function() {
 
 
 function synchronize() {
-  if(POSTinProgress){
-    return;
-  }
   let xhr = new XMLHttpRequest();
   xhr.open('GET', apiURL, true);
     xhr.responseType = 'json';
@@ -45,7 +42,7 @@ function synchronize() {
         window.editor.setValue(content);
         window.editor.clearSelection();
         window.editor.moveCursorToPosition(cursorPos);
-        window.currentSyncTime = sync;
+        // window.currentSyncTime = sync;
 
       } else if (status !== 200) {
         console.log('Failed synchronization');
@@ -55,6 +52,7 @@ function synchronize() {
 }
 
 function updateServer() {
+  return;
 
   window.POSTinProgress = true;
   const xhr = new XMLHttpRequest();

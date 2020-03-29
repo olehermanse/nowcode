@@ -16,6 +16,10 @@ class Operation {
     }
   }
 
+  copy() {
+    return Operation.from(this);
+  }
+
   identical(other) {
     return (
       this.time === other.time &&
@@ -31,6 +35,10 @@ class Operation {
 
   after(other) {
     return new Date(this.time) > new Date(other.time);
+  }
+
+  json() {
+    return JSON.stringify(this);
   }
 }
 
@@ -121,6 +129,14 @@ class LineBuffer {
     return new LineBuffer(data.name, data.operations);
   }
 
+  copy() {
+    return LineBuffer.from(this);
+  }
+
+  json() {
+    return JSON.stringify(this);
+  }
+
   render() {
     let content = "";
     for (let op of this.operations) {
@@ -171,12 +187,15 @@ class LineBuffer {
   }
 
   merge(buffer) {
+    let duplicate = this.copy();
     for (let op of buffer.operations) {
-      this.maybeAddOperation(op);
+      duplicate.maybeAddOperation(op.copy());
     }
+    return duplicate;
   }
 }
 
 module.exports = {
-  LineBuffer
+  LineBuffer,
+  Operation
 };

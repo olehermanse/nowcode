@@ -15,7 +15,7 @@ describe("LineBuffer", function() {
     assert.equal(one.render(), "abcd");
     let two = new LineBuffer(JSON.parse(start)).insert("ef", -1);
     assert.equal(two.render(), "ef");
-    one.merge(two);
+    one = one.merge(two);
     assert.equal(one.render(), "abcdef");
   });
   describe("#render()", function() {

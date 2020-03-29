@@ -70,6 +70,7 @@ class Delete extends Operation {
     this.string = string;
     this.pos = pos;
     this.time = time;
+    this.command = "delete";
   }
 
   static from(data) {

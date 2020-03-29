@@ -60,8 +60,11 @@ function userEdit(e) {
     console.log(e);
     let string = e.lines.join("\n");
     buffer.insert(string, e.start.column);
-  }
-  else{
+  } else if (e.action === "remove"){
+    console.log(e);
+    let string = e.lines.join("\n");
+    buffer.delete(string, e.start.column);
+  } else {
     return;
   }
   let operation = buffer.operations[buffer.operations.length - 1];

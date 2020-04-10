@@ -138,12 +138,16 @@ class LineBuffer {
     return JSON.stringify(this);
   }
 
-  render() {
+  lines() {
     let content = "";
     for (let op of this.operations) {
       content = op.apply(content);
     }
-    return content;
+    return content.split("\n");
+  }
+
+  render() {
+    return this.lines().join("\n");
   }
 
   insert(data, pos) {
@@ -198,5 +202,5 @@ class LineBuffer {
 
 module.exports = {
   LineBuffer,
-  Operation
+  Operation,
 };

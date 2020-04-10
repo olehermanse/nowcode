@@ -7,7 +7,7 @@ body {
 }
 
 body > * {
-  max-width:800px;
+  max-width: 800px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -18,7 +18,7 @@ textarea {
 }
 
 h1 > span {
-  color:blue;
+  color: blue;
 }
 
 a {
@@ -27,31 +27,32 @@ a {
 }
 
 .card {
-  background-color:  white;
+  background-color: white;
   padding: 1rem;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   border-radius: 2px;
-  border-bottom: 2px solid rgb(210,210,210);
+  border-bottom: 2px solid rgb(210, 210, 210);
 }
 
-input, textarea {
-  background-color:white;
-  border:0.1rem solid rgb(210,210,210);
+input,
+textarea {
+  background-color: white;
+  border: 0.1rem solid rgb(210, 210, 210);
   border-radius: 2px;
-  padding:0.5rem;
+  padding: 0.5rem;
 }
 
 button {
-  background-color: #3B5998;
-  color:white;
-  padding:0.5em;
-  border:none;
-  border-radius:2px;
+  background-color: #3b5998;
+  color: white;
+  padding: 0.5em;
+  border: none;
+  border-radius: 2px;
 }
 
 #clipboardBtn {
-  background-color:rgb(150,150,150);
+  background-color: rgb(150, 150, 150);
 }
 
 #editor {

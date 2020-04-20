@@ -37,17 +37,17 @@ describe("LineBuffer", function () {
       );
     });
   });
-  describe("#delete()", function () {
-    it("Allows you to delete a character", function () {
+  describe("#remove()", function () {
+    it("Allows you to remove a character", function () {
       assert.equal(new LineBuffer().insert("a", 0).remove("a", 0).render(), "");
     });
-    it("Allows you to delete a word", function () {
+    it("Allows you to remove a word", function () {
       assert.equal(
         new LineBuffer().insert("hello world", 0).remove("hello ", 0).render(),
         "world"
       );
     });
-    it("Allows you to delete a multi line buffer", function () {
+    it("Allows you to remove a multi line buffer", function () {
       assert.equal(
         new LineBuffer()
           .insert("hello\nworld\n", 0)
@@ -56,7 +56,7 @@ describe("LineBuffer", function () {
         ""
       );
     });
-    it("Allows you to delete a newline", function () {
+    it("Allows you to remove a newline", function () {
       assert.equal(
         new LineBuffer().insert("hello\nworld", 0).remove("\n", 5).render(),
         "helloworld"
@@ -72,7 +72,7 @@ describe("LineBuffer", function () {
         "aaaa"
       );
     });
-    it("Doesn't delete past end", function () {
+    it("Doesn't remove past end", function () {
       assert.equal(
         new LineBuffer()
           .insert("aaaa", 0)

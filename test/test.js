@@ -36,24 +36,6 @@ describe("LineBuffer", function () {
         "abc"
       );
     });
-    it("Allows you to append using negative index (-1)", function () {
-      assert.equal(
-        new LineBuffer().insert("hello, ", 0).insert("world", -1).render(),
-        "hello, world"
-      );
-    });
-    it("Allows you to insert using negative index (-2)", function () {
-      assert.equal(
-        new LineBuffer().insert("ad", 0).insert("bc", -2).render(),
-        "abcd"
-      );
-    });
-    it("Allows you to prepend using negative index (-3)", function () {
-      assert.equal(
-        new LineBuffer().insert("cd", 0).insert("ab", -3).render(),
-        "abcd"
-      );
-    });
   });
   describe("#delete()", function () {
     it("Allows you to delete a character", function () {
@@ -78,16 +60,6 @@ describe("LineBuffer", function () {
       assert.equal(
         new LineBuffer().insert("hello\nworld", 0).remove("\n", 5).render(),
         "helloworld"
-      );
-    });
-    it("Allows you to delete using negative index (-1)", function () {
-      assert.equal(
-        new LineBuffer()
-          .insert("abcd", 0)
-          .remove("d", -1)
-          .remove("c", -1)
-          .render(),
-        "ab"
       );
     });
     it("Is skipped if it doesn't apply", function () {

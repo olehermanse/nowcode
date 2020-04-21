@@ -24,7 +24,8 @@ class Operation {
     return (
       this.time === other.time &&
       this.command === other.command &&
-      this.pos === other.pos &&
+      this.row === other.row &&
+      this.column === other.column &&
       this.string === other.string
     );
   }
@@ -43,60 +44,76 @@ class Operation {
 }
 
 class Insert extends Operation {
-  constructor(string, pos, time = new Date().toISOString()) {
+  constructor(string, row, column, time = new Date().toISOString()) {
     super();
     this.time = time;
     this.command = "insert";
     this.string = string;
-    this.pos = pos;
+    this.row = row;
+    this.column = column;
   }
 
   static from(data) {
-    return new Insert(data.string, data.pos, data.time);
+    return new Insert(data.string, data.row, data.column, data.time);
   }
 
   apply(content) {
-    let pos = this.pos;
-    if (pos < 0) {
-      pos = content.length + 1 + pos;
-    }
-    return content.slice(0, pos) + this.string + content.slice(pos);
+    let lines = this.string.split("\n");
+    let row = this.row;
+    let column = this.column;
+
+    let before = content.slice(0, row);
+    let affected = content[row];
+    let extra = lines.slice(1);
+    let after = content.slice(row + 1);
+
+    let edited = affected.slice(0, column) + lines[0] + affected.slice(column);
+
+    let result = before.concat(edited, extra, after);
+    return result;
   }
 }
 
 class Remove extends Operation {
-  constructor(string, pos, time = new Date().toISOString()) {
+  constructor(string, row, column, time = new Date().toISOString()) {
     super();
     this.string = string;
-    this.pos = pos;
+    this.row = row;
+    this.column = column;
     this.time = time;
     this.command = "remove";
   }
 
   static from(data) {
-    return new Remove(data.string, data.pos, data.time);
+    return new Remove(data.string, data.row, data.column, data.time);
   }
 
   apply(content) {
-    let pos = this.pos;
-    let length = this.string.length;
-    if (pos < 0) {
-      pos = content.length + pos;
+    let to_remove = this.string.split("\n");
+    let number_of_lines = to_remove.length - 1;
+    let row = this.row;
+    let column = this.column;
+
+    let before = content.slice(0, row);
+
+    let affected = content.slice(row, row + to_remove.length);
+    let msg = JSON.stringify(affected) + " -> ";
+    if (affected.length > 2) {
+      affected = [affected[0], affected[affected.length - 1]];
+      to_remove = [to_remove[0], to_remove[to_remove.length - 1]];
+      msg = msg + JSON.stringify(affected) + " -> ";
     }
-
-    if (pos + length > content.length) {
-      // No-op: attempted to delete something too long
-      return content;
+    affected[0] =
+      affected[0].slice(0, column) +
+      affected[0].slice(column + to_remove[0].length);
+    if (affected.length === 2) {
+      affected[1] = affected[1].slice(to_remove[1].length);
+      affected = [affected[0] + affected[1]];
     }
+    msg = msg + JSON.stringify(affected);
+    let rest = content.slice(row + number_of_lines + 1);
 
-    let match_string = content.slice(pos, pos + length);
-
-    if (match_string != this.string) {
-      // No-op: attempted to delete string which is not there
-      return content;
-    }
-
-    return content.slice(0, pos) + content.slice(pos + length);
+    return before.concat(affected, rest);
   }
 }
 
@@ -113,7 +130,7 @@ class Content extends Operation {
   }
 
   apply(content) {
-    return this.string;
+    return [""];
   }
 }
 
@@ -139,24 +156,25 @@ class LineBuffer {
   }
 
   lines() {
-    let content = "";
+    let content = [""];
     for (let op of this.operations) {
+      let before = JSON.stringify(content);
       content = op.apply(content);
     }
-    return content.split("\n");
+    return content;
   }
 
   render() {
     return this.lines().join("\n");
   }
 
-  insert(data, pos) {
-    this.operations.push(new Insert(data, pos));
+  insert(data, row, column) {
+    this.operations.push(new Insert(data, row, column));
     return this;
   }
 
-  remove(data, pos) {
-    this.operations.push(new Remove(data, pos));
+  remove(data, row, column) {
+    this.operations.push(new Remove(data, row, column));
     return this;
   }
 

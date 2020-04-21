@@ -28,7 +28,7 @@ app.get("/api/buffers/:id", (req, res) => {
   let id = req.params.id;
   if (!(id in buffers)) {
     buffers[id] = new LineBuffer();
-    buffers[id].insert("Hello, world!");
+    buffers[id].insert("Hello, world!", 0, 0);
   }
   res.send(buffers[id]);
 });

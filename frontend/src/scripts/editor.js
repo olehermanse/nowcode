@@ -57,11 +57,11 @@ function userEdit(e) {
   if (e.action === "insert") {
     console.log(e);
     let string = e.lines.join("\n");
-    buffer.insert(string, e.start.column);
+    buffer.insert(string, e.start.row, e.start.column);
   } else if (e.action === "remove") {
     console.log(e);
     let string = e.lines.join("\n");
-    buffer.remove(string, e.start.column);
+    buffer.remove(string, e.start.row, e.start.column);
   } else {
     return;
   }

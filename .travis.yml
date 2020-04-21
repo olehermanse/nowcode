@@ -1,4 +1,6 @@
 language: node_js
+node_js:
+  - 8
 env:
   global:
     - CI=true
@@ -7,6 +9,7 @@ matrix:
   fast_finish: true
   include:
     - os: linux
+      dist: bionic
     - os: osx
       language: generic
       if: branch = master
@@ -15,12 +18,12 @@ matrix:
       language: generic
 
 install:
-    - chmod 700 ./travis/install.sh
-    - ./travis/install.sh
+  - chmod 700 ./travis/install.sh
+  - ./travis/install.sh
 
 script:
-    - chmod 700 ./travis/test.sh
-    - ./travis/test.sh
+  - npm run build
+  - npm run test
 
 notifications:
-    email: false
+  email: false

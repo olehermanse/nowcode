@@ -1,14 +1,26 @@
 {
   "name": "nowcode",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.2.0",
+  "description": "http://nowco.de",
   "main": "index.js",
   "scripts": {
-    "gulp": "gulp"
+    "build": "gulp",
+    "test": "node backend/app.js && mocha",
+    "dev-server": "nodemon dev-server.js",
+    "server": "node backend/backend.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olehermanse/nowcode.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/olehermanse/nowcode/issues"
+  },
+  "homepage": "https://github.com/olehermanse/nowcode#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "ace-builds": "^1.4.4",
     "babel-preset-env": "^1.7.0",
     "babelify": "^7.3.0",
@@ -27,5 +39,9 @@
     "path": "^0.12.7",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0"
+  },
+  "devDependencies": {
+    "mocha": "^7.1.1",
+    "nodemon": "^2.0.2"
   }
 }

@@ -1,37 +1,11 @@
-default: run-server
-
-web/dist: web/src/*
-	sh -c "cd web && npm install"
-	sh -c "cd web && npm run gulp"
-	rm -rf nowcode_server/web
-	mkdir nowcode_server/web
-	cp -r web/dist nowcode_server/web
-
-run-server:
-	python3 nowcode_server
-
-swagger.json: nowcode_server
-	python3 nowcode_server --docs > swagger.json
-
-public: swagger.json
-	spectacle swagger.json
-
-deploy:
-	rm -f nohup.out
-	bash scripts/deploy_nowcode.sh
-
-deploy-branch:
-	rm -f nohup.out
-	bash scripts/deploy_branch.sh
-
-docs: public swagger.json
-	rm -rf docs
-	cp -r public docs
-	cp swagger.json docs/
+frontend/dist: frontend/src/*
+	sh -c "cd frontend && npm install"
+	sh -c "cd frontend && npm run gulp"
+	rm -rf nowcode_server/frontend
+	mkdir nowcode_server/frontend
+	cp -r frontend/dist nowcode_server/frontend
 
 nowcode.tar:
 	rm -f nowcode.tar ; tar -c -f nowcode.tar ./*
 
-check: docs
-
-.PHONY: run-server default check nowcode.tar
+.PHONY: default nowcode.tar

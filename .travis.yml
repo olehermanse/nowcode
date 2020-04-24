@@ -1,4 +1,6 @@
-language: python
+language: node_js
+node_js:
+  - 8
 env:
   global:
     - CI=true
@@ -7,9 +9,7 @@ matrix:
   fast_finish: true
   include:
     - os: linux
-      python: 3.5
-    - os: linux
-      python: 3.4
+      dist: bionic
     - os: osx
       language: generic
       if: branch = master
@@ -18,15 +18,12 @@ matrix:
       language: generic
 
 install:
-    - chmod 700 ./travis/install.sh
-    - ./travis/install.sh
-    - pip3 --version
+  - chmod 700 ./travis/install.sh
+  - ./travis/install.sh
 
 script:
-    - py.test
-    - make check
-    - chmod 700 ./travis/test.sh
-    - ./travis/test.sh
+  - npm run build
+  - npm run test
 
 notifications:
-    email: false
+  email: false

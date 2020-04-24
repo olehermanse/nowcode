@@ -1,5 +1,0 @@
-Flask>=0.12.2
-pytest>=3.2.1
-flask-restplus>=0.10.1
-Flask-Compress>=1.4.0
-gunicorn>=19.9.0

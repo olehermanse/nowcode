@@ -55,18 +55,15 @@ function synchronize() {
 
 function userEdit(e) {
   if (e.action === "insert") {
-    console.log(e);
     const string = e.lines.join("\n");
     buffer.insert(string, e.start.row, e.start.column);
   } else if (e.action === "remove") {
-    console.log(e);
     const string = e.lines.join("\n");
     buffer.remove(string, e.start.row, e.start.column);
   } else {
     return;
   }
   let operation = buffer.operations[buffer.operations.length - 1];
-  console.log(operation);
 
   const xhr = new XMLHttpRequest();
   const content = window.editor.getValue();

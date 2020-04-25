@@ -34,7 +34,6 @@ app.get("/api/buffers/:id", (req, res) => {
 });
 
 app.post("/api/buffers/:id", (req, res) => {
-  console.log(req.body);
   const id = req.params.id;
   if (!(id in buffers)) {
     buffers[id] = new LineBuffer();

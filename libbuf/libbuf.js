@@ -97,11 +97,10 @@ class Remove extends Operation {
     const before = content.slice(0, row);
 
     let affected = content.slice(row, row + to_remove.length);
-    let msg = JSON.stringify(affected) + " -> ";
+
     if (affected.length > 2) {
       affected = [affected[0], affected[affected.length - 1]];
       to_remove = [to_remove[0], to_remove[to_remove.length - 1]];
-      msg = msg + JSON.stringify(affected) + " -> ";
     }
     affected[0] =
       affected[0].slice(0, column) +
@@ -110,7 +109,6 @@ class Remove extends Operation {
       affected[1] = affected[1].slice(to_remove[1].length);
       affected = [affected[0] + affected[1]];
     }
-    msg = msg + JSON.stringify(affected);
     const rest = content.slice(row + number_of_lines + 1);
 
     return before.concat(affected, rest);

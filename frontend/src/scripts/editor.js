@@ -16,12 +16,12 @@ window.POSTinProgress = false;
 window.currentSyncTime = 0;
 window.currentEditorData = "";
 
-var enableAndFocusEditor = function () {
+const enableAndFocusEditor = function () {
   if (editor) {
     editor.focus();
-    var session = editor.getSession();
+    const session = editor.getSession();
     //Get the number of lines
-    var count = session.getLength();
+    const count = session.getLength();
     //Go to end of the last line
     editor.gotoLine(count, session.getLine(count - 1).length);
     editor.setReadOnly(false);
@@ -56,11 +56,11 @@ function synchronize() {
 function userEdit(e) {
   if (e.action === "insert") {
     console.log(e);
-    let string = e.lines.join("\n");
+    const string = e.lines.join("\n");
     buffer.insert(string, e.start.row, e.start.column);
   } else if (e.action === "remove") {
     console.log(e);
-    let string = e.lines.join("\n");
+    const string = e.lines.join("\n");
     buffer.remove(string, e.start.row, e.start.column);
   } else {
     return;

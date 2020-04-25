@@ -4,7 +4,7 @@ const app = express();
 const LineBuffer = require("../libbuf/libbuf.js").LineBuffer;
 const Operation = require("../libbuf/libbuf.js").Operation;
 
-let buffers = {};
+const buffers = {};
 
 buffers.one = new LineBuffer();
 buffers.one.insert("Buffer one");
@@ -25,7 +25,7 @@ app.use(express.static("frontend/dist"));
 app.use(express.json());
 
 app.get("/api/buffers/:id", (req, res) => {
-  let id = req.params.id;
+  const id = req.params.id;
   if (!(id in buffers)) {
     buffers[id] = new LineBuffer();
     buffers[id].insert("Hello, world!", 0, 0);
@@ -35,11 +35,11 @@ app.get("/api/buffers/:id", (req, res) => {
 
 app.post("/api/buffers/:id", (req, res) => {
   console.log(req.body);
-  let id = req.params.id;
+  const id = req.params.id;
   if (!(id in buffers)) {
     buffers[id] = new LineBuffer();
   }
-  let operation = Operation.from(req.body);
+  const operation = Operation.from(req.body);
   buffers[id].maybeAddOperation(operation);
   res.send("POST response");
 });

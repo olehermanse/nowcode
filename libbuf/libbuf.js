@@ -58,18 +58,18 @@ class Insert extends Operation {
   }
 
   apply(content) {
-    let lines = this.string.split("\n");
-    let row = this.row;
-    let column = this.column;
+    const lines = this.string.split("\n");
+    const row = this.row;
+    const column = this.column;
 
-    let before = content.slice(0, row);
-    let affected = content[row];
-    let extra = lines.slice(1);
-    let after = content.slice(row + 1);
+    const before = content.slice(0, row);
+    const affected = content[row];
+    const extra = lines.slice(1);
+    const after = content.slice(row + 1);
 
-    let edited = affected.slice(0, column) + lines[0] + affected.slice(column);
+    const edited = affected.slice(0, column) + lines[0] + affected.slice(column);
 
-    let result = before.concat(edited, extra, after);
+    const result = before.concat(edited, extra, after);
     return result;
   }
 }
@@ -90,11 +90,11 @@ class Remove extends Operation {
 
   apply(content) {
     let to_remove = this.string.split("\n");
-    let number_of_lines = to_remove.length - 1;
-    let row = this.row;
-    let column = this.column;
+    const number_of_lines = to_remove.length - 1;
+    const row = this.row;
+    const column = this.column;
 
-    let before = content.slice(0, row);
+    const before = content.slice(0, row);
 
     let affected = content.slice(row, row + to_remove.length);
     let msg = JSON.stringify(affected) + " -> ";
@@ -111,7 +111,7 @@ class Remove extends Operation {
       affected = [affected[0] + affected[1]];
     }
     msg = msg + JSON.stringify(affected);
-    let rest = content.slice(row + number_of_lines + 1);
+    const rest = content.slice(row + number_of_lines + 1);
 
     return before.concat(affected, rest);
   }
@@ -157,8 +157,8 @@ class LineBuffer {
 
   lines() {
     let content = [""];
-    for (let op of this.operations) {
-      let before = JSON.stringify(content);
+    for (const op of this.operations) {
+      const before = JSON.stringify(content);
       content = op.apply(content);
     }
     return content;
@@ -195,7 +195,7 @@ class LineBuffer {
     // all LineBuffers start with one Content operation
     console.assert(length > 0);
 
-    let first = this.operations[0].time;
+    const first = this.operations[0].time;
     if (op.before(first)) {
       return;
     }
@@ -210,8 +210,8 @@ class LineBuffer {
   }
 
   merge(buffer) {
-    let duplicate = this.copy();
-    for (let op of buffer.operations) {
+    const duplicate = this.copy();
+    for (const op of buffer.operations) {
       duplicate.maybeAddOperation(op.copy());
     }
     return duplicate;

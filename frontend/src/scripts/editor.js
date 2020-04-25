@@ -35,20 +35,21 @@ function synchronize() {
   xhr.onload = function () {
     const status = xhr.status;
 
-    if (status === 200) {
-      const cursorPos = window.editor.getCursorPosition();
-      serverBuffer = LineBuffer.from(xhr.response);
-      buffer = serverBuffer.merge(buffer);
-
-      const content = buffer.render();
-      disableChangeEvent = true;
-      window.editor.setValue(content);
-      disableChangeEvent = false;
-      window.editor.clearSelection();
-      window.editor.moveCursorToPosition(cursorPos);
-    } else if (status !== 200) {
+    if (status !== 200) {
       console.log("Failed synchronization");
+      return;
     }
+
+    const cursorPos = window.editor.getCursorPosition();
+    serverBuffer = LineBuffer.from(xhr.response);
+    buffer = serverBuffer.merge(buffer);
+
+    const content = buffer.render();
+    disableChangeEvent = true;
+    window.editor.setValue(content);
+    disableChangeEvent = false;
+    window.editor.clearSelection();
+    window.editor.moveCursorToPosition(cursorPos);
   };
   xhr.send();
 }

@@ -16,12 +16,12 @@ window.POSTinProgress = false;
 window.currentSyncTime = 0;
 window.currentEditorData = "";
 
-var enableAndFocusEditor = function () {
+const enableAndFocusEditor = function () {
   if (editor) {
     editor.focus();
-    var session = editor.getSession();
+    const session = editor.getSession();
     //Get the number of lines
-    var count = session.getLength();
+    const count = session.getLength();
     //Go to end of the last line
     editor.gotoLine(count, session.getLine(count - 1).length);
     editor.setReadOnly(false);
@@ -35,38 +35,36 @@ function synchronize() {
   xhr.onload = function () {
     const status = xhr.status;
 
-    if (status === 200) {
-      const cursorPos = window.editor.getCursorPosition();
-      serverBuffer = LineBuffer.from(xhr.response);
-      buffer = serverBuffer.merge(buffer);
-
-      const content = buffer.render();
-      disableChangeEvent = true;
-      window.editor.setValue(content);
-      disableChangeEvent = false;
-      window.editor.clearSelection();
-      window.editor.moveCursorToPosition(cursorPos);
-    } else if (status !== 200) {
+    if (status !== 200) {
       console.log("Failed synchronization");
+      return;
     }
+
+    const cursorPos = window.editor.getCursorPosition();
+    serverBuffer = LineBuffer.from(xhr.response);
+    buffer = serverBuffer.merge(buffer);
+
+    const content = buffer.render();
+    disableChangeEvent = true;
+    window.editor.setValue(content);
+    disableChangeEvent = false;
+    window.editor.clearSelection();
+    window.editor.moveCursorToPosition(cursorPos);
   };
   xhr.send();
 }
 
 function userEdit(e) {
   if (e.action === "insert") {
-    console.log(e);
-    let string = e.lines.join("\n");
+    const string = e.lines.join("\n");
     buffer.insert(string, e.start.row, e.start.column);
   } else if (e.action === "remove") {
-    console.log(e);
-    let string = e.lines.join("\n");
+    const string = e.lines.join("\n");
     buffer.remove(string, e.start.row, e.start.column);
   } else {
     return;
   }
   let operation = buffer.operations[buffer.operations.length - 1];
-  console.log(operation);
 
   const xhr = new XMLHttpRequest();
   const content = window.editor.getValue();

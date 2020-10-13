@@ -1,9 +1,10 @@
-// This is identical to backend/backend.js
-// except we can add dev only things here, like webpack middleware
+// This is identical to backend/server.js
+// except we use port 3000 and can add dev only things
 
 const app = require("./backend/app.js").app;
 
-// Serve the files on port 3000.
-app.listen(3000, function () {
-  console.log("Example app listening on port 3000!\n");
+// Start server on port 3000:
+const port = 3000;
+app.listen(port, function () {
+  console.log("nowcode dev-server listening on port" + port);
 });

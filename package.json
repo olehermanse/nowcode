@@ -7,7 +7,7 @@
     "build": "gulp",
     "test": "node backend/app.js && mocha",
     "dev-server": "nodemon dev-server.js",
-    "server": "node backend/backend.js"
+    "server": "node backend/server.js"
   },
   "repository": {
     "type": "git",

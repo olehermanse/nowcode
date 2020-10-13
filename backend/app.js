@@ -21,11 +21,12 @@ app.get("/", (req, res) => {
   res.redirect(302, "/" + new_id);
 });
 
+app.use(express.static("frontend/dist"));
+
 app.get("/:id/", (req, res) => {
   res.sendFile("./index.html", { root: "frontend/dist" });
 });
 
-app.use(express.static("frontend/dist"));
 app.use(express.json());
 
 app.get("/api/buffers/:id", (req, res) => {

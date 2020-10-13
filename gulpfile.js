@@ -13,7 +13,7 @@ var gulp = require("gulp"),
   path = require("path");
 
 gulp.task("default", function (done) {
-  gulp.series(["styles", "scripts", "html"], "inline")();
+  gulp.series(["styles", "scripts", "html"], "inline", "copy")();
   done();
 });
 
@@ -64,5 +64,11 @@ gulp.task("inline", function (done) {
       fs.writeFileSync("frontend/dist/index.html", html);
     }
   );
+  done();
+});
+
+gulp.task('copy', function (done) {
+  gulp.src('./frontend/src/favicon.ico')
+      .pipe(gulp.dest('./frontend/dist/'));
   done();
 });

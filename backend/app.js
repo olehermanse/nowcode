@@ -15,7 +15,11 @@ function randomID() {
   return "" + Math.floor(Math.random() * 10000000);
 }
 
-app.get("/", (req, res) => res.redirect(301, "/" + randomID()));
+app.get("/", (req, res) => {
+  const new_id = randomID();
+  console.log(`Redirecting '/' -> '/${new_id}' (302)`);
+  res.redirect(302, "/" + new_id);
+});
 
 app.get("/:id/", (req, res) => {
   res.sendFile("./index.html", { root: "frontend/dist" });

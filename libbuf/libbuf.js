@@ -80,7 +80,9 @@ class Insert extends Operation {
 
       // extra is all the lines between first and last, if any:
       const extra = lines.slice(1, lines.length - 1);
-      console.assert(extra.length === lines.length - 2);
+      console.assert(
+        extra.length === lines.length - 2,
+        "Since we have removed first and last element of lines, extra should be 2 shorter");
       // (Can be empty array)
 
       // Edited is array of 2 or more strings:

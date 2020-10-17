@@ -58,19 +58,36 @@ class Insert extends Operation {
   }
 
   apply(content) {
-    const lines = this.string.split("\n");
+    const lines = this.string.split("\n"); // Lines to insert into content
     const row = this.row;
     const column = this.column;
 
     const before = content.slice(0, row);
     const affected = content[row];
-    const extra = lines.slice(1);
     const after = content.slice(row + 1);
 
-    const edited = affected.slice(0, column) + lines[0] + affected.slice(column);
+    // Combine affected line and lines to insert:
+    const edited = [];
+    if (lines.length === 1) {
+      // Easy case, we are not inserting any newlines,
+      // so we just insert the string somewhere in the affected line:
+      edited.push(affected.slice(0, column) + lines[0] + affected.slice(column));
+    }
+    else {
+      // We are inserting more than 1 line, i.e. at least one newline:
+      const first = affected.slice(0, column) + lines[0];
+      const last = lines[lines.length - 1] + affected.slice(column);
 
-    const result = before.concat(edited, extra, after);
-    return result;
+      // extra is all the lines between first and last, if any:
+      const extra = lines.slice(1, lines.length - 1);
+      console.assert(extra.length === lines.length - 2);
+      // (Can be empty array)
+
+      // Edited is array of 2 or more strings:
+      edited.push(first, ...extra, last);
+    }
+
+    return [...before, ...edited, ...after];
   }
 }
 

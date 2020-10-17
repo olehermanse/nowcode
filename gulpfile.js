@@ -8,12 +8,12 @@ var gulp = require("gulp"),
   uglify = require("gulp-uglify"),
   sourcemaps = require("gulp-sourcemaps"),
   babelify = require("babelify"),
-  inline = require("gulp-inline-source"),
+  inlinesource = require("gulp-inline-source"),
   fs = require("fs"),
   path = require("path");
 
 gulp.task("default", function (done) {
-  gulp.series(["styles", "scripts", "html"], "inline", "copy")();
+  gulp.series(["styles", "scripts", "copy"], "html")();
   done();
 });
 
@@ -49,22 +49,14 @@ gulp.task("scripts", function () {
 });
 
 gulp.task("html", function () {
-  return gulp.src("frontend/src/index.html").pipe(gulp.dest("./frontend/dist"));
-});
+  var options = {
+    compress: false,
+    rootpath: path.resolve("frontend/dist"),
+  };
 
-gulp.task("inline", function (done) {
-  htmlpath = path.resolve("frontend/dist/index.html");
-  inline(
-    htmlpath,
-    {
-      compress: true,
-      rootpath: path.resolve("dist"),
-    },
-    function (err, html) {
-      fs.writeFileSync("frontend/dist/index.html", html);
-    }
-  );
-  done();
+  return gulp.src('./frontend/src/index.html')
+      .pipe(inlinesource(options))
+      .pipe(gulp.dest('./frontend/dist'));
 });
 
 gulp.task('copy', function (done) {

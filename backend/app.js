@@ -6,11 +6,6 @@ const Operation = require("../libbuf/libbuf.js").Operation;
 
 const buffers = {};
 
-buffers.one = new LineBuffer();
-buffers.one.insert("Buffer one");
-buffers.two = new LineBuffer();
-buffers.two.insert("Buffer two");
-
 function randomID() {
   return "" + Math.floor(Math.random() * 10000000);
 }

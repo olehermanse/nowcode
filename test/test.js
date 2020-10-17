@@ -36,6 +36,24 @@ describe("LineBuffer", function () {
         "abc"
       );
     });
+    it("Allows you to insert a newline at beginning of buffer", function () {
+      assert.strictEqual(
+        new LineBuffer()
+          .insert("hello, world\n", 0, 0)
+          .insert("abc\ndef", 0, 0)
+          .render(),
+        "abc\ndefhello, world\n"
+      );
+    });
+    it("Correctly splits lines when you insert newlines", function () {
+      assert.deepStrictEqual(
+        new LineBuffer()
+          .insert("a\ndef", 0, 0)
+          .insert("b\nc\n\n", 0, 1)
+          .lines(),
+        ["ab", "c", "", "", "def"]
+      );
+    });
   });
   describe("#remove()", function () {
     it("Allows you to remove a character", function () {

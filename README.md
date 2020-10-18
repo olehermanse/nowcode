@@ -1,10 +1,11 @@
 # Nowcode
 
-http://nowco.de
+https://nowco.de
 
 ## Development server
 
 Start the development server:
+
 ```
 npm run dev-server
 ```

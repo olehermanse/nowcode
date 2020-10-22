@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "gulp",
+    "build:watch": "gulp watch",
     "test": "node backend/app.js && mocha",
-    "dev-server": "nodemon dev-server.js",
+    "dev-server": "concurrently \"nodemon dev-server.js\" \"npm run build:watch\"",
     "server": "node backend/server.js"
   },
   "repository": {
@@ -41,6 +42,7 @@
     "vinyl-source-stream": "^2.0.0"
   },
   "devDependencies": {
+    "concurrently": "^5.3.0",
     "mocha": "^7.1.1",
     "nodemon": "^2.0.2"
   }

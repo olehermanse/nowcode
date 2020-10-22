@@ -43,6 +43,29 @@ class Operation {
   }
 }
 
+function multiline_insert(inserted, affected, column) {
+  // Insert an array of 2 or more lines (inserted),
+  // into the affected line (a string),
+  // at given index, column (0-indexed).
+  // Returns the resulting array of lines, at least 2 strings.
+
+  // The first and last lines are a combination of affected and inserted:
+  // (What was there before and what we are inserting)
+  const first = affected.slice(0, column) + inserted[0];
+  const last = inserted[inserted.length - 1] + affected.slice(column);
+  // (Both first and last must be strings but can be empty strings)
+
+  // extra has all the lines between first and last, if any:
+  const extra = inserted.slice(1, inserted.length - 1);
+  console.assert(
+    extra.length === inserted.length - 2,
+    "Since we have removed first and last elements, extra should be 2 shorter");
+  // (Can be empty array)
+
+  // Result is an array of 2 or more strings:
+  return [first, ...extra, last];
+}
+
 class Insert extends Operation {
   constructor(string, row, column, time = new Date().toISOString()) {
     super();
@@ -58,7 +81,7 @@ class Insert extends Operation {
   }
 
   apply(content) {
-    const lines = this.string.split("\n"); // Lines to insert into content
+    const inserted = this.string.split("\n"); // Lines to insert into content
     const row = this.row;
     const column = this.column;
 
@@ -68,25 +91,14 @@ class Insert extends Operation {
 
     // Combine affected line and lines to insert:
     const edited = [];
-    if (lines.length === 1) {
+    if (inserted.length === 1) {
       // Easy case, we are not inserting any newlines,
       // so we just insert the string somewhere in the affected line:
-      edited.push(affected.slice(0, column) + lines[0] + affected.slice(column));
+      edited.push(affected.slice(0, column) + inserted[0] + affected.slice(column));
     }
     else {
       // We are inserting more than 1 line, i.e. at least one newline:
-      const first = affected.slice(0, column) + lines[0];
-      const last = lines[lines.length - 1] + affected.slice(column);
-
-      // extra is all the lines between first and last, if any:
-      const extra = lines.slice(1, lines.length - 1);
-      console.assert(
-        extra.length === lines.length - 2,
-        "Since we have removed first and last element of lines, extra should be 2 shorter");
-      // (Can be empty array)
-
-      // Edited is array of 2 or more strings:
-      edited.push(first, ...extra, last);
+      edited.push(...multiline_insert(inserted, affected, column));
     }
 
     return [...before, ...edited, ...after];

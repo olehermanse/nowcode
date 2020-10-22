@@ -7,7 +7,7 @@
     "build": "gulp",
     "build:watch": "gulp watch",
     "test": "node backend/app.js && mocha",
-    "dev-server": "concurrently \"nodemon dev-server.js\" \"npm run build:watch\"",
+    "dev-server": "concurrently \"nodemon dev-server.js\" \"npm run build:watch\" \"es-dev-server --app-index frontend/dist/index.html --node-resolve --watch\"",
     "server": "node backend/server.js"
   },
   "repository": {
@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "concurrently": "^5.3.0",
+    "es-dev-server": "^1.57.8",
     "mocha": "^7.1.1",
     "nodemon": "^2.0.2"
   }

@@ -17,12 +17,12 @@ gulp.task("default", function (done) {
   done();
 });
 
-gulp.task(
-  "watch",
-  gulp.series("default", function () {
-    gulp.watch(["frontend/src/**/*"], ["default"]);
-  })
-);
+gulp.task('watch', function () {
+  gulp.watch(
+    ["frontend/src/**/*"],
+    gulp.series('default'),
+  );
+});
 
 gulp.task("styles", function () {
   return gulp
@@ -55,12 +55,12 @@ gulp.task("html", function () {
   };
 
   return gulp.src('./frontend/src/index.html')
-      .pipe(inlinesource(options))
-      .pipe(gulp.dest('./frontend/dist'));
+    .pipe(inlinesource(options))
+    .pipe(gulp.dest('./frontend/dist'));
 });
 
 gulp.task('copy', function (done) {
   gulp.src('./frontend/src/favicon.ico')
-      .pipe(gulp.dest('./frontend/dist/'));
+    .pipe(gulp.dest('./frontend/dist/'));
   done();
 });

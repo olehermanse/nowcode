@@ -27,7 +27,7 @@
     "browserify": "^16.2.3",
     "clipboard-js": "^0.3.5",
     "del": "^3.0.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "fs": "0.0.1-security",
     "gulp": "^4.0.2",
     "gulp-cli": "^2.2.0",

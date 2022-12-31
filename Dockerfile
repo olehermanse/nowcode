@@ -1,4 +1,4 @@
-FROM node:8 AS build
+FROM node:18 AS build
 ADD ./ /nowcode
 WORKDIR /nowcode
 RUN rm -rf frontend/dist

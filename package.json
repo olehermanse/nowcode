@@ -21,16 +21,16 @@
   },
   "homepage": "https://github.com/olehermanse/nowcode#readme",
   "dependencies": {
-    "ace-builds": "^1.4.4",
+    "ace-builds": "^1.14.0",
     "babel-preset-env": "^1.7.0",
     "babelify": "^7.3.0",
-    "browserify": "^16.2.3",
-    "clipboard-js": "^0.3.5",
+    "browserify": "^16.5.2",
+    "clipboard-js": "^0.3.6",
     "del": "^3.0.0",
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "fs": "0.0.1-security",
     "gulp": "^4.0.2",
-    "gulp-cli": "^2.2.0",
+    "gulp-cli": "^2.3.0",
     "gulp-concat": "^2.6.1",
     "gulp-inline-source": "^4.0.0",
     "gulp-rename": "^1.4.0",
@@ -43,8 +43,8 @@
   },
   "devDependencies": {
     "concurrently": "^5.3.0",
-    "es-dev-server": "^1.57.8",
-    "mocha": "^7.1.1",
-    "nodemon": "^2.0.6"
+    "es-dev-server": "^1.60.2",
+    "mocha": "^7.2.0",
+    "nodemon": "^2.0.20"
   }
 }

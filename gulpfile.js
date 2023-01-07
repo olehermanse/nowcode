@@ -1,5 +1,6 @@
-var gulp = require("gulp"),
-  rename = require("gulp-rename"),
+const { src, dest, series, parallel, watch} = require('gulp');
+
+var rename = require("gulp-rename"),
   concat = require("gulp-concat"),
   del = require("del"),
   browserify = require("browserify"),
@@ -12,26 +13,13 @@ var gulp = require("gulp"),
   fs = require("fs"),
   path = require("path");
 
-gulp.task("default", function (done) {
-  gulp.series(["styles", "scripts", "copy"], "html")();
-  done();
-});
-
-gulp.task('watch', function () {
-  gulp.watch(
-    ["frontend/src/**/*"],
-    gulp.series('default'),
-  );
-});
-
-gulp.task("styles", function () {
-  return gulp
-    .src("frontend/src/styles/**/*.css")
+function styles() {
+  return src("frontend/src/styles/**/*.css")
     .pipe(concat("style.css"))
-    .pipe(gulp.dest("frontend/dist/styles"));
-});
+    .pipe(dest("frontend/dist/styles"));
+}
 
-gulp.task("scripts", function () {
+function scripts() {
   var b = browserify({
     entries: "frontend/src/scripts/main.js",
     debug: true,
@@ -45,22 +33,38 @@ gulp.task("scripts", function () {
     .pipe(sourcemaps.init({ loadmaps: true }))
     .pipe(uglify())
     .pipe(sourcemaps.write("./"))
-    .pipe(gulp.dest("./frontend/dist/scripts"));
-});
+    .pipe(dest("./frontend/dist/scripts"));
+}
 
-gulp.task("html", function () {
+function html() {
   var options = {
     compress: false,
     rootpath: path.resolve("frontend/dist"),
   };
 
-  return gulp.src('./frontend/src/index.html')
+  return src('./frontend/src/index.html')
     .pipe(inlinesource(options))
-    .pipe(gulp.dest('./frontend/dist'));
-});
+    .pipe(dest('./frontend/dist'));
+}
 
-gulp.task('copy', function (done) {
-  gulp.src('./frontend/src/favicon.ico')
-    .pipe(gulp.dest('./frontend/dist/'));
-  done();
-});
+function copy() {
+  return src('./frontend/src/favicon.ico')
+    .pipe(dest('./frontend/dist/'));
+}
+
+exports.default = series(
+  parallel(
+    styles, scripts, copy
+  ),
+  html
+);
+
+function mywatch(callback) {
+    watch(
+      ["frontend/src/**/*"],
+      exports.default
+    );
+    callback();
+}
+
+exports.watch = mywatch;

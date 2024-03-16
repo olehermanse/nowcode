@@ -4,7 +4,7 @@ WORKDIR /nowcode
 RUN rm -rf frontend/dist
 RUN npm install --only=prod
 RUN npm run build
-ENV PORT 80
+ENV PORT 3000
 ENV NODE_ENV production
-EXPOSE 80
+EXPOSE 3000
 CMD ["node", "backend/server.js"]

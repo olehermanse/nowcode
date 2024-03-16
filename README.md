@@ -19,7 +19,7 @@ http://127.0.0.1:3000
 ### docker
 
 ```
-docker build --tag nowcode . && docker run -p 3000:80 -it --name nowcode --rm nowcode
+docker build --tag nowcode . && docker run -it -p 3000:3000 --name nowcode --rm nowcode
 ```
 
 http://127.0.0.1:3000

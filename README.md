@@ -1,25 +1,17 @@
 # Nowcode
 
+Website:
+
 https://nowco.de
 
-## Development server
+### Run with docker
 
-Start the development server:
-
-```
-npm run dev-server
-```
-
-For development purposes it defaults to port 3000:
-
-http://127.0.0.1:3000
-
-## Containers
-
-### docker
+Run:
 
 ```
 docker build --tag nowcode . && docker run -it -p 3000:3000 --name nowcode --rm nowcode
 ```
+
+Open:
 
 http://127.0.0.1:3000

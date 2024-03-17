@@ -1,0 +1,61 @@
+html {
+  font-family: sans-serif;
+}
+
+body {
+  background-color: rgb(227, 227, 227);
+}
+
+body > * {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+h1 > span {
+  color: blue;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.card {
+  background-color: white;
+  padding: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 2px;
+  border-bottom: 2px solid rgb(210, 210, 210);
+}
+
+input,
+textarea {
+  background-color: white;
+  border: 0.1rem solid rgb(210, 210, 210);
+  border-radius: 2px;
+  padding: 0.5rem;
+}
+
+button {
+  background-color: #3b5998;
+  color: white;
+  padding: 0.5em;
+  border: none;
+  border-radius: 2px;
+}
+
+#clipboardBtn {
+  background-color: rgb(150, 150, 150);
+}
+
+#editor {
+  width: 100%;
+  height: 500px;
+}

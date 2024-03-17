@@ -1,6 +1,9 @@
+import { editor_start } from "./editor.ts";
+import { clipboard_start } from "./clipboard.ts";
+
 (() => {
-  require("../../src/scripts/editor.js");
-  require("../../src/scripts/clipboard.js");
+  editor_start();
+  clipboard_start();
 
   const createNewBtn = document.getElementById("createNewBtn");
   createNewBtn.addEventListener("click", () => {

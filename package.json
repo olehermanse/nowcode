@@ -4,10 +4,11 @@
   "description": "https://nowco.de",
   "main": "index.js",
   "scripts": {
-    "build": "gulp",
-    "build:watch": "gulp watch",
-    "test": "node backend/app.js && mocha",
-    "server": "node backend/server.js"
+    "build": "npm run build:vite",
+    "build:vite": "vite build",
+    "test": "vitest",
+    "tsc": "echo TODO # tsc --noEmit",
+    "preview": "vite preview"
   },
   "repository": {
     "type": "git",
@@ -20,26 +21,16 @@
   },
   "homepage": "https://github.com/olehermanse/nowcode#readme",
   "dependencies": {
-    "@babel/preset-env": "^7.24.0",
     "ace-builds": "^1.32.7",
-    "babelify": "^10.0.0",
-    "browserify": "^17.0.0",
-    "clipboard-js": "^0.3.6",
     "del": "^3.0.0",
     "express": "^4.18.3",
-    "gulp": "^4.0.2",
-    "gulp-cli": "^2.3.0",
-    "gulp-concat": "^2.6.1",
-    "gulp-inline-source": "^4.0.0",
-    "gulp-rename": "^1.4.0",
-    "gulp-sequence": "^1.0.0",
-    "gulp-sourcemaps": "^2.6.5",
-    "gulp-uglify": "^3.0.2",
     "path": "^0.12.7",
-    "vinyl-buffer": "^1.0.1",
-    "vinyl-source-stream": "^2.0.0"
+    "typescript": "^5.4.2",
+    "vite": "^5.1.6"
   },
   "devDependencies": {
-    "mocha": "^10.3.0"
+    "@types/ace": "^0.0.52",
+    "@types/node": "^20.11.28",
+    "vitest": "^1.3.1"
   }
 }

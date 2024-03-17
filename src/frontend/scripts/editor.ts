@@ -1,20 +1,14 @@
-require("../../../node_modules/ace-builds/src-min-noconflict/ace.js");
-const LineBuffer = require("../../../libbuf/libbuf.js").LineBuffer;
+import { LineBuffer } from "../../libbuf/libbuf.js";
+import * as ace from "ace-builds/src-noconflict/ace";
 
 let buffer = new LineBuffer();
 let serverBuffer = null;
 let disableChangeEvent = false;
 
-window.editor = ace.edit("editor");
-
 const pathname = window.location.pathname;
 const bufferID = pathname.substr(1, pathname.length - 1);
 
 const apiURL = "/api/buffers/" + bufferID;
-window.POSTinProgress = false;
-
-window.currentSyncTime = 0;
-window.currentEditorData = "";
 
 const enableAndFocusEditor = function () {
   if (editor) {
@@ -77,16 +71,23 @@ function userEdit(e) {
   xhr.send(operation.json());
 }
 
-setInterval(() => {
-  synchronize();
-}, 150);
+export function editor_start() {
+  window.editor = ace.edit("editor");
+  window.POSTinProgress = false;
 
-window.editor.on("change", (e) => {
-  if (disableChangeEvent) {
-    return;
-  }
+  window.currentSyncTime = 0;
+  window.currentEditorData = "";
+  setInterval(() => {
+    synchronize();
+  }, 150);
 
-  userEdit(e);
-});
+  window.editor.on("change", (e) => {
+    if (disableChangeEvent) {
+      return;
+    }
 
-enableAndFocusEditor();
+    userEdit(e);
+  });
+
+  enableAndFocusEditor();
+}

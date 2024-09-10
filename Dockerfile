@@ -21,7 +21,7 @@ RUN npm install --include=dev
 RUN npm run tsc
 RUN npm run test
 
-FROM denoland/deno:1.40.2 AS run
+FROM denoland/deno:1.46.3 AS run
 WORKDIR /nowcode
 COPY --from=build /nowcode/dist/ dist/
 COPY src/ src/

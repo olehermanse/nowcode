@@ -1,4 +1,4 @@
-FROM node:20 AS build
+FROM docker.io/node:20 AS build
 WORKDIR /nowcode
 COPY package-lock.json package.json ./
 RUN npm install --only=prod
@@ -13,7 +13,7 @@ RUN rm -rf dist
 RUN npm run build
 RUN bash add_version.sh
 
-FROM node:20 AS test
+FROM docker.io/node:20 AS test
 WORKDIR /nowcode
 COPY --from=build /nowcode /nowcode
 COPY test test
@@ -21,7 +21,7 @@ RUN npm install --include=dev
 RUN npm run tsc
 RUN npm run test
 
-FROM denoland/deno:1.46.3 AS run
+FROM docker.io/denoland/deno:1.46.3 AS run
 WORKDIR /nowcode
 COPY --from=build /nowcode/dist/ dist/
 COPY src/ src/

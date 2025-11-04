@@ -47,5 +47,5 @@ app.post("/api/buffers/:id", (req, res) => {
 // Start server on port 3000:
 const port = 3000;
 app.listen(port, function () {
-  console.log("nowcode server listening on port " + port);
+  console.log("nowcode server running: http://127.0.0.1:" + port);
 });

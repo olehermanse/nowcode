@@ -23,7 +23,7 @@
   "dependencies": {
     "ace-builds": "^1.43.4",
     "del": "^3.0.0",
-    "express": "^4.21.2",
+    "express": "^4.22.1",
     "path": "^0.12.7",
     "typescript": "^5.9.3",
     "vite": "^7.1.12"

@@ -1,6 +1,6 @@
 FROM docker.io/node:24.14.1-alpine3.23@sha256:01743339035a5c3c11a373cd7c83aeab6ed1457b55da6a69e014a95ac4e4700b AS build
 WORKDIR /nowcode
-RUN apk add bash
+RUN apk add bash sed git
 COPY package-lock.json package.json ./
 RUN npm install --only=prod
 COPY .git .git

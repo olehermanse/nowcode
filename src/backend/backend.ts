@@ -1,5 +1,5 @@
-// @deno-types="npm:@types/express@5.0.6"
-import express from "npm:express@5.2.1";
+// @deno-types="npm:@types/express@5.3.0"
+import express from "npm:express@5.3.0";
 
 import { LineBuffer, Operation } from "../libbuf/libbuf.ts";
 

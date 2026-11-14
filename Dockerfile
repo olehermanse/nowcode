@@ -22,7 +22,7 @@ RUN npm install --include=dev
 RUN npm run tsc
 RUN npm run test
 
-FROM docker.io/denoland/deno:2.7.11@sha256:869e31370dca82b10abefeabe92a2efae44c0d8c70e03776b05ca07ce6b2e062 AS run
+FROM docker.io/denoland/deno:2.9.8@sha256:a0d88a7fcbd44f062cba2748e19df67d30290ad12aa203c7c1e0b12462c483f0 AS run
 WORKDIR /nowcode
 COPY --from=build /nowcode/dist/ dist/
 COPY src/ src/
